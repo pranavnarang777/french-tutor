@@ -26,13 +26,13 @@
 const SUPABASE_URL = 'sb_publishable_nm-hD9fxDCxr75JO_uHAqw_v3TsddIk';
 const SUPABASE_ANON_KEY = 'sb_secret_brNu1CdIwnowF5JKi5NGsg_jquWTEoh';
 
-let supabase = null;
+let supabaseClient = null;
 const supabaseConfigured =
   SUPABASE_URL && SUPABASE_URL !== 'YOUR_SUPABASE_URL' &&
   SUPABASE_ANON_KEY && SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY';
 
 if (supabaseConfigured && window.supabase && window.supabase.createClient) {
-  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 }
 
 // ============================================================
@@ -562,9 +562,9 @@ function playEpisode(episode, cardEl, rate) {
 
 async function markComplete(lessonId) {
   completedLessons.add(lessonId);
-  if (supabase && session) {
+  if (supabaseClient && session) {
     try {
-      await supabase
+      await supabaseClient
         .from('progress')
         .upsert({ user_id: session.user.id, lesson_id: lessonId }, { onConflict: 'user_id,lesson_id' });
     } catch (err) {
@@ -579,9 +579,9 @@ async function markComplete(lessonId) {
 }
 
 async function loadProgress() {
-  if (supabase && session) {
+  if (supabaseClient && session) {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await supabaseClient
         .from('progress')
         .select('lesson_id')
         .eq('user_id', session.user.id);
@@ -627,13 +627,13 @@ function clearAuthMessage() {
 async function handleLogin(e) {
   e && e.preventDefault();
   clearAuthMessage();
-  if (!supabase) {
+  if (!supabaseClient) {
     showAuthMessage('Supabase is not configured. Add your URL and anon key in app.js.', 'error');
     return;
   }
   const email = document.getElementById('authEmail').value.trim();
   const password = document.getElementById('authPassword').value;
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
   if (error) return showAuthMessage(error.message, 'error');
   session = data.session;
   updateAuthArea();
@@ -644,7 +644,7 @@ async function handleLogin(e) {
 
 async function handleSignup() {
   clearAuthMessage();
-  if (!supabase) {
+  if (!supabaseClient) {
     showAuthMessage('Supabase is not configured. Add your URL and anon key in app.js.', 'error');
     return;
   }
@@ -653,7 +653,7 @@ async function handleSignup() {
   if (!email || password.length < 6) {
     return showAuthMessage('Enter an email and a password of at least 6 characters.', 'error');
   }
-  const { data, error } = await supabase.auth.signUp({ email, password });
+  const { data, error } = await supabaseClient.auth.signUp({ email, password });
   if (error) return showAuthMessage(error.message, 'error');
   if (data.session) {
     session = data.session;
@@ -667,7 +667,7 @@ async function handleSignup() {
 }
 
 async function handleLogout() {
-  if (supabase) await supabase.auth.signOut();
+  if (supabaseClient) await supabaseClient.auth.signOut();
   session = null;
   updateAuthArea();
   await loadProgress();
@@ -704,11 +704,11 @@ async function init() {
   renderCategoryGrid();
   renderEpisodes();
 
-  if (supabase) {
+  if (supabaseClient) {
     try {
-      const { data } = await supabase.auth.getSession();
+      const { data } = await supabaseClient.auth.getSession();
       session = data.session;
-      supabase.auth.onAuthStateChange(async (_event, newSession) => {
+      supabaseClient.auth.onAuthStateChange(async (_event, newSession) => {
         session = newSession;
         updateAuthArea();
         await loadProgress();
