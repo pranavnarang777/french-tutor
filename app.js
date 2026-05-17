@@ -23,8 +23,8 @@
 //
 // ============================================================
 
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+const SUPABASE_URL = 'sb_publishable_nm-hD9fxDCxr75JO_uHAqw_v3TsddIk';
+const SUPABASE_ANON_KEY = 'sb_secret_brNu1CdIwnowF5JKi5NGsg_jquWTEoh';
 
 let supabase = null;
 const supabaseConfigured =
