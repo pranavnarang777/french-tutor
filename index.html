@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Français — A structured path to French fluency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button id="menuToggle" class="menu-toggle" aria-label="Open menu">☰</button>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <div class="brand">
+        <h1 class="brand-title">FRANÇAIS</h1>
+        <p class="brand-sub">A structured French curriculum</p>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-link" data-page="home" href="#home">Home</a>
+
+        <div class="nav-section">
+          <div class="nav-label">Lessons</div>
+          <ul id="lessonNav" class="nav-list"></ul>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-label">Reference</div>
+          <a class="nav-link" data-page="vocabulary" href="#vocabulary">Vocabulary</a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-label">Audio</div>
+          <a class="nav-link" data-page="audio-lessons" href="#audio-lessons">Audio Lessons</a>
+        </div>
+      </nav>
+    </div>
+
+    <div class="sidebar-bottom">
+      <div class="progress-mini">
+        <div class="progress-track"><div class="progress-fill" id="sidebarProgressFill"></div></div>
+        <div class="progress-text"><span id="sidebarProgressText">0 of 5 lessons complete</span></div>
+      </div>
+      <div id="authArea" class="auth-area">
+        <a class="auth-link" data-page="login" href="#login">Login for cross-device sync</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <!-- HOME -->
+    <section class="page" id="page-home">
+      <header class="page-header">
+        <h2 class="page-title">Bonjour.</h2>
+        <p class="page-sub">A structured path to French fluency.</p>
+      </header>
+
+      <div class="progress-card">
+        <div class="progress-card-top">
+          <div>
+            <div class="progress-card-label">Your progress</div>
+            <div class="progress-card-value" id="homeProgressText">0 of 5 lessons complete</div>
+          </div>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="homeProgressFill"></div></div>
+      </div>
+
+      <div class="card-grid">
+        <a class="card" data-page="lesson" data-lesson-id="lesson-1" href="#lesson-1">
+          <div class="card-eyebrow">Lessons</div>
+          <div class="card-title">Begin the curriculum</div>
+          <div class="card-sub">Start with sounds, accents, and the building blocks.</div>
+        </a>
+        <a class="card" data-page="vocabulary" href="#vocabulary">
+          <div class="card-eyebrow">Vocabulary</div>
+          <div class="card-title">Words to know</div>
+          <div class="card-sub">150+ essential words with phonetics and examples.</div>
+        </a>
+        <a class="card" data-page="audio-lessons" href="#audio-lessons">
+          <div class="card-eyebrow">Audio</div>
+          <div class="card-title">Listen and follow</div>
+          <div class="card-sub">Five dialogues, A1 to A2, real-life situations.</div>
+        </a>
+        <div class="card card-tip">
+          <div class="card-eyebrow">Daily tip</div>
+          <div class="card-title">Speak it out loud</div>
+          <div class="card-sub">French rewards the mouth. Repeat every example aloud — your ear depends on it.</div>
+        </div>
+      </div>
+
+      <section class="curriculum">
+        <h3 class="section-title">Full curriculum</h3>
+        <div id="curriculumList" class="curriculum-list"></div>
+      </section>
+    </section>
+
+    <!-- LESSON -->
+    <section class="page" id="page-lesson">
+      <div class="lesson-eyebrow" id="lessonEyebrow">Lesson 1 of 5</div>
+      <h2 class="page-title" id="lessonTitle"></h2>
+      <p class="page-sub" id="lessonSubtitle"></p>
+
+      <div class="phase-bar">
+        <div class="phase-pip active" data-phase="0">
+          <span class="phase-pip-num">1</span><span class="phase-pip-label">Theory</span>
+        </div>
+        <div class="phase-pip" data-phase="1">
+          <span class="phase-pip-num">2</span><span class="phase-pip-label">Examples</span>
+        </div>
+        <div class="phase-pip" data-phase="2">
+          <span class="phase-pip-num">3</span><span class="phase-pip-label">Exercises</span>
+        </div>
+      </div>
+
+      <div id="phaseContent" class="phase-content"></div>
+
+      <div class="phase-footer">
+        <button id="prevPhaseBtn" class="btn btn-ghost">Back</button>
+        <button id="nextPhaseBtn" class="btn btn-primary">Continue to examples</button>
+      </div>
+    </section>
+
+    <!-- VOCABULARY -->
+    <section class="page" id="page-vocabulary">
+      <header class="page-header">
+        <h2 class="page-title">Vocabulary</h2>
+        <p class="page-sub">Search any French or English word — or browse by category.</p>
+      </header>
+
+      <div class="search-wrap">
+        <input id="vocabSearch" class="search-input" type="text" placeholder="Type a French or English word...">
+      </div>
+      <div id="searchResult" class="search-result"></div>
+
+      <div class="cat-tabs" id="catTabs"></div>
+      <div id="catGrid" class="cat-grid"></div>
+    </section>
+
+    <!-- AUDIO LESSONS -->
+    <section class="page" id="page-audio-lessons">
+      <header class="page-header">
+        <h2 class="page-title">Audio Lessons</h2>
+        <p class="page-sub">Five episodes of conversational French. Play, slow down, follow along.</p>
+      </header>
+      <div id="episodeList" class="episode-list"></div>
+    </section>
+
+    <!-- LOGIN -->
+    <section class="page" id="page-login">
+      <header class="page-header">
+        <h2 class="page-title">Sign in</h2>
+        <p class="page-sub">Sync your lesson progress across devices.</p>
+      </header>
+
+      <form id="authForm" class="auth-form" autocomplete="on">
+        <label class="field">
+          <span class="field-label">Email</span>
+          <input id="authEmail" type="email" required autocomplete="email">
+        </label>
+        <label class="field">
+          <span class="field-label">Password</span>
+          <input id="authPassword" type="password" required minlength="6" autocomplete="current-password">
+        </label>
+        <div id="authMessage" class="auth-message" hidden></div>
+        <div class="auth-buttons">
+          <button type="submit" class="btn btn-primary" id="loginBtn">Login</button>
+          <button type="button" class="btn btn-ghost" id="signupBtn">Sign up</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- Supabase via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
