@@ -423,6 +423,283 @@ const LESSONS = [
         explanation: 'Question word + est-ce que + subject + verb — the standard everyday pattern.'
       }
     ]
+  },
+
+  {
+    id: 'lesson-6',
+    title: 'Passé Composé: Avoir Verbs',
+    subtitle: 'How to talk about what you did — with avoir as the auxiliary.',
+    theory: `
+      <p>The passé composé is the main past tense in spoken French. Where English splits the past into several distinct shapes — "I ate," "I have eaten," "I was eating" — French folds nearly all completed past actions in conversation into a single tense. <span class="fr">J'ai mangé</span> <button class="play-btn" data-text="j'ai mangé">▶</button> covers all three. If you can use the passé composé confidently, you can recount most of your day in French.</p>
+
+      <p>It is built from two parts. The first is an auxiliary verb — either <span class="fr">avoir</span> or <span class="fr">être</span> — conjugated in the present tense. The second is the <em>past participle</em> of the main verb. Put them side by side and you have the past: <span class="fr">j'ai parlé</span> ("I spoke"), <span class="fr">tu as fini</span> ("you finished"), <span class="fr">il a vendu</span> ("he sold"). This lesson covers verbs that take <span class="fr">avoir</span> as their auxiliary — and that is most of them.</p>
+
+      <p>The past participle of regular verbs follows a clean pattern keyed to the infinitive's ending. For <span class="fr">-er</span> verbs, drop <span class="fr">-er</span> and add <span class="fr">-é</span>: <span class="fr">parler</span> → <span class="fr">parlé</span>, <span class="fr">manger</span> → <span class="fr">mangé</span>, <span class="fr">regarder</span> → <span class="fr">regardé</span>. For <span class="fr">-ir</span> verbs, drop <span class="fr">-ir</span> and add <span class="fr">-i</span>: <span class="fr">finir</span> → <span class="fr">fini</span>, <span class="fr">choisir</span> → <span class="fr">choisi</span>. For <span class="fr">-re</span> verbs, drop <span class="fr">-re</span> and add <span class="fr">-u</span>: <span class="fr">vendre</span> → <span class="fr">vendu</span>, <span class="fr">attendre</span> → <span class="fr">attendu</span>. Three patterns; thousands of verbs.</p>
+
+      <div class="rule-box">
+        <strong>Irregular past participles — memorise these</strong><br>
+        <span class="fr">avoir</span> → <span class="fr">eu</span> <button class="play-btn" data-text="j'ai eu">▶</button>
+        &nbsp; <span class="fr">être</span> → <span class="fr">été</span> <button class="play-btn" data-text="j'ai été">▶</button>
+        &nbsp; <span class="fr">faire</span> → <span class="fr">fait</span> <button class="play-btn" data-text="j'ai fait">▶</button><br>
+        <span class="fr">prendre</span> → <span class="fr">pris</span> <button class="play-btn" data-text="j'ai pris">▶</button>
+        &nbsp; <span class="fr">voir</span> → <span class="fr">vu</span> <button class="play-btn" data-text="j'ai vu">▶</button>
+        &nbsp; <span class="fr">pouvoir</span> → <span class="fr">pu</span> <button class="play-btn" data-text="j'ai pu">▶</button><br>
+        <span class="fr">vouloir</span> → <span class="fr">voulu</span>
+        &nbsp; <span class="fr">boire</span> → <span class="fr">bu</span>
+        &nbsp; <span class="fr">lire</span> → <span class="fr">lu</span>
+        &nbsp; <span class="fr">écrire</span> → <span class="fr">écrit</span><br>
+        <span class="fr">mettre</span> → <span class="fr">mis</span>
+        &nbsp; <span class="fr">savoir</span> → <span class="fr">su</span>
+      </div>
+
+      <p>The irregular past participles do not follow the regular pattern, and they are exactly the verbs you will use most. There is no shortcut here — sit with the list above, say each one out loud paired with <span class="fr">j'ai</span>, and let your ear absorb it. <span class="fr">J'ai eu, j'ai été, j'ai fait, j'ai pris, j'ai vu</span>. The rhythm matters more than the rule.</p>
+
+      <p>One final point, and it is the one English speakers most often get wrong: with <span class="fr">avoir</span> verbs, the past participle does <em>not</em> change to match the subject. <span class="fr">J'ai mangé, elle a mangé, ils ont mangé, nous avons mangé</span> — the participle stays as <span class="fr">mangé</span> every single time. No <span class="fr">-e</span> for feminine, no <span class="fr">-s</span> for plural. Agreement does exist in French, but with <span class="fr">avoir</span> it only kicks in under very specific conditions covered in a later lesson. For now: with <span class="fr">avoir</span>, the participle is fixed.</p>
+    `,
+    examples: [
+      { fr: "J'ai mangé une pizza.", en: 'I ate a pizza.', note: 'avoir + mangé — regular -er verb.' },
+      { fr: 'Tu as fini ton travail?', en: 'Did you finish your work?', note: 'avoir + fini — regular -ir verb.' },
+      { fr: 'Il a vendu sa voiture.', en: 'He sold his car.', note: 'avoir + vendu — regular -re verb.' },
+      { fr: 'Nous avons vu un bon film.', en: 'We saw a good film.', note: 'Irregular: voir → vu.' },
+      { fr: 'Vous avez pris le métro?', en: 'Did you take the metro?', note: 'Irregular: prendre → pris.' },
+      { fr: 'Elles ont fait du sport.', en: 'They did sport.', note: 'Irregular: faire → fait. Participle does not agree with elles.' },
+      { fr: "J'ai eu une réunion ce matin.", en: 'I had a meeting this morning.', note: 'Irregular: avoir → eu.' },
+      { fr: 'Il a bu un café.', en: 'He drank a coffee.', note: 'Irregular: boire → bu.' },
+      { fr: 'Nous avons parlé pendant une heure.', en: 'We talked for an hour.', note: 'Regular -er — parler → parlé.' },
+      { fr: 'Elle a écrit un email.', en: 'She wrote an email.', note: 'Irregular: écrire → écrit. No agreement with elle.' }
+    ],
+    exercises: [
+      {
+        q: "Complete: J'___ mangé une salade.",
+        options: ['ai', 'as', 'a', 'avons'],
+        correct: 0,
+        explanation: "Passé composé with avoir: j'ai + past participle. J'ai mangé."
+      },
+      {
+        q: 'Complete: Nous ___ fini le projet.',
+        options: ['avons', 'avez', 'ont', 'sommes'],
+        correct: 0,
+        explanation: 'Avoir: nous avons. Sommes is être — the wrong auxiliary here.'
+      },
+      {
+        q: 'What is the past participle of parler?',
+        options: ['parlé', 'parler', 'parlant', 'parlons'],
+        correct: 0,
+        explanation: 'Regular -er verbs: drop -er, add -é. Parler → parlé.'
+      },
+      {
+        q: 'What is the past participle of finir?',
+        options: ['fini', 'finir', 'finissant', 'finit'],
+        correct: 0,
+        explanation: 'Regular -ir verbs: drop -ir, add -i. Finir → fini.'
+      },
+      {
+        q: 'What is the past participle of faire?',
+        options: ['fait', 'faisé', 'fairu', 'fairé'],
+        correct: 0,
+        explanation: 'Faire is irregular: the past participle is fait. Must be memorised.'
+      },
+      {
+        q: 'Complete: Elle ___ vu un film hier soir.',
+        options: ['a', 'est', 'ai', 'ont'],
+        correct: 0,
+        explanation: 'Avoir: elle a. Voir uses avoir, not être.'
+      },
+      {
+        q: 'Complete: Vous ___ pris le bus?',
+        options: ['avez', 'êtes', 'ont', 'avons'],
+        correct: 0,
+        explanation: 'Avoir: vous avez. Prendre uses avoir as its auxiliary.'
+      },
+      {
+        q: 'Which sentence is correct?',
+        options: ["J'ai mangé", 'Je suis mangé', "J'ai mangée", 'Je mangé'],
+        correct: 0,
+        explanation: "Manger uses avoir. The past participle doesn't agree with the subject with avoir verbs: mangé, not mangée."
+      }
+    ]
+  },
+
+  {
+    id: 'lesson-7',
+    title: 'Passé Composé: Être Verbs',
+    subtitle: 'Motion and state verbs that use être — and why the participle changes.',
+    theory: `
+      <p>A small but very common group of verbs breaks the pattern from the previous lesson: instead of <span class="fr">avoir</span>, they take <span class="fr">être</span> as their auxiliary in the passé composé. <span class="fr">Je suis allé</span> <button class="play-btn" data-text="je suis allé">▶</button> ("I went"), not "j'ai allé." These verbs are mostly verbs of motion or change of state — coming, going, arriving, leaving, being born, dying — and there is a logic to them worth feeling rather than just memorising. They all describe the subject <em>moving through</em> or <em>passing into</em> a new state.</p>
+
+      <p>Traditional French teaching gives you the list as an acronym: <strong>DR &amp; MRS VANDERTRAMP</strong> — <span class="fr">Devenir, Revenir, Monter, Rester, Sortir, Venir, Aller, Naître, Descendre, Entrer, Rentrer, Tomber, Retourner, Arriver, Mourir, Partir</span>. It is ugly, but it works. Memorise the acronym or memorise the family — either way, when you reach for the passé composé of one of these verbs, your hand should go straight to <span class="fr">être</span>. All <em>reflexive</em> verbs (the ones with <span class="fr">se</span>) also use <span class="fr">être</span>, though those are a topic for later.</p>
+
+      <p>Here is the crucial difference from the previous lesson: with <span class="fr">être</span> verbs, the past participle <em>agrees</em> with the subject in gender and number. Add <span class="fr">-e</span> for feminine, <span class="fr">-s</span> for masculine plural, <span class="fr">-es</span> for feminine plural. So the same verb takes four written forms: <span class="fr">il est allé</span> <button class="play-btn" data-text="il est allé">▶</button>, <span class="fr">elle est allée</span> <button class="play-btn" data-text="elle est allée">▶</button>, <span class="fr">ils sont allés</span> <button class="play-btn" data-text="ils sont allés">▶</button>, <span class="fr">elles sont allées</span> <button class="play-btn" data-text="elles sont allées">▶</button>.</p>
+
+      <div class="rule-box">
+        <strong>Agreement with être — the four endings</strong><br>
+        masculine singular: <span class="fr">allé</span> &nbsp; (no change)<br>
+        feminine singular: <span class="fr">allée</span> &nbsp; (+ e)<br>
+        masculine plural: <span class="fr">allés</span> &nbsp; (+ s)<br>
+        feminine plural: <span class="fr">allées</span> &nbsp; (+ es)<br>
+        <em>This agreement is not optional. Getting it right is one of the markers of fluency, and in some cases (allé vs. allée, parti vs. partie) it even affects pronunciation in liaison contexts.</em>
+      </div>
+
+      <p>For most verbs in the list, the agreement endings are silent — <span class="fr">allé</span> and <span class="fr">allée</span> sound identical aloud. But in writing they are non-negotiable, and on participles ending in a consonant (like <span class="fr">mort</span> vs <span class="fr">morte</span>) the difference becomes audible. Write a feminine "I went home" as <span class="fr">je suis rentrée</span> and a male speaker writes <span class="fr">je suis rentré</span>. Different person, different ending. This is one of the small disciplines that quietly separates a learner from a fluent speaker.</p>
+
+      <p>The être verbs you will reach for most often, in daily life, are <span class="fr">aller</span> (to go), <span class="fr">venir</span> (to come), <span class="fr">partir</span> (to leave), <span class="fr">arriver</span> (to arrive), <span class="fr">sortir</span> (to go out), <span class="fr">rentrer</span> (to go home), <span class="fr">rester</span> (to stay), <span class="fr">tomber</span> (to fall), <span class="fr">naître</span> (to be born), and <span class="fr">mourir</span> (to die). Their past participles: <span class="fr">allé, venu, parti, arrivé, sorti, rentré, resté, tombé, né, mort</span>. Learn them paired with <span class="fr">je suis</span> and the rest of the family will follow.</p>
+    `,
+    examples: [
+      { fr: 'Il est allé au marché.', en: 'He went to the market.', note: 'aller — masculine singular, no agreement change.' },
+      { fr: 'Elle est allée au marché.', en: 'She went to the market.', note: 'aller — feminine singular: + e → allée.' },
+      { fr: 'Ils sont partis tôt.', en: 'They left early.', note: 'partir — masculine plural: + s → partis.' },
+      { fr: 'Elles sont arrivées en retard.', en: 'They arrived late.', note: 'arriver — feminine plural: + es → arrivées.' },
+      { fr: 'Je suis rentré à minuit.', en: 'I got home at midnight.', note: 'rentrer — male speaker; female would write rentrée.' },
+      { fr: 'Tu es sorti hier soir?', en: 'Did you go out last night?', note: 'sortir — tu form, addressed to a male.' },
+      { fr: 'Nous sommes restés à la maison.', en: 'We stayed at home.', note: 'rester — masculine plural agreement.' },
+      { fr: 'Elle est tombée dans la rue.', en: 'She fell in the street.', note: 'tomber — feminine singular: tombée.' },
+      { fr: 'Il est né à Bruxelles.', en: 'He was born in Brussels.', note: 'naître → né. Irregular past participle.' },
+      { fr: 'Vous êtes venus comment?', en: 'How did you get here?', note: 'venir → venu. Plural addressed group: venus.' }
+    ],
+    exercises: [
+      {
+        q: 'Which auxiliary does aller use in the passé composé?',
+        options: ['avoir', 'être', 'aller', 'faire'],
+        correct: 1,
+        explanation: 'Aller is a DR MRS VANDERTRAMP verb — it uses être, not avoir.'
+      },
+      {
+        q: 'Complete: Elle ___ partie à 8h.',
+        options: ['a', 'est', 'ai', 'ont'],
+        correct: 1,
+        explanation: 'Partir uses être. Elle est partie — with feminine agreement on the participle.'
+      },
+      {
+        q: 'Which is correct for a female speaker saying "I went"?',
+        options: ['Je suis allé', 'Je suis allée', "J'ai allé", "J'ai allée"],
+        correct: 1,
+        explanation: 'Aller uses être, and the participle agrees with the subject: allée for feminine.'
+      },
+      {
+        q: 'Complete: Ils ___ arrivés en retard.',
+        options: ['ont', 'sont', 'avons', 'êtes'],
+        correct: 1,
+        explanation: 'Arriver uses être. Ils sont arrivés — note the -s agreement for masculine plural.'
+      },
+      {
+        q: 'Which past participle form is correct? Elle est ___ (tomber).',
+        options: ['tombé', 'tombée', 'tombés', 'tombées'],
+        correct: 1,
+        explanation: 'Elle is feminine singular → tombée (add -e for feminine agreement).'
+      },
+      {
+        q: 'Complete: Nous ___ restés à Paris.',
+        options: ['avons', 'sommes', 'êtes', 'ont'],
+        correct: 1,
+        explanation: 'Rester uses être. Nous sommes restés — masculine plural agreement.'
+      },
+      {
+        q: 'Which sentence uses être correctly?',
+        options: ['Elle est mangé', 'Il est allé', "J'ai venu", 'Nous avons parti'],
+        correct: 1,
+        explanation: 'Aller uses être. Venir and partir also use être, so "j\'ai venu" and "nous avons parti" are wrong.'
+      },
+      {
+        q: 'Complete (speaking to a male friend): Tu ___ sorti hier?',
+        options: ['as', 'es', 'est', 'ai'],
+        correct: 1,
+        explanation: 'Sortir uses être. Tu es sorti — no agreement change needed for masculine singular.'
+      }
+    ]
+  },
+
+  {
+    id: 'lesson-8',
+    title: "L'Imparfait",
+    subtitle: 'The past tense for habits, descriptions, and ongoing states.',
+    theory: `
+      <p>French has two main past tenses used in everyday speech: the <em>passé composé</em> from the previous lessons, and the <em>imparfait</em> — the one this lesson is about. Knowing when to use each is one of the most important and most misunderstood aspects of French grammar. They are not interchangeable. Choosing the wrong one will not make you incomprehensible, but it will mark you as someone who has not yet sorted them out.</p>
+
+      <p>The simplest way to feel the difference: the passé composé describes a <em>completed action</em> with a clear beginning and end — I ate, I went, I saw, it ended. The imparfait describes <em>ongoing states</em>, <em>habitual actions</em>, or <em>background context</em> in the past — I was eating, I used to go, it was raining. Think of the passé composé as a snapshot, and the imparfait as the backdrop the snapshot is taken against. <span class="fr">J'ai mangé une pomme</span> is the snapshot; <span class="fr">je mangeais une pomme</span> <button class="play-btn" data-text="je mangeais une pomme">▶</button> is the backdrop.</p>
+
+      <p>Forming the imparfait is mercifully regular. Take the <span class="fr">nous</span> form of the present tense, drop the <span class="fr">-ons</span> ending to find the stem, and add a fixed set of endings: <span class="fr">-ais, -ais, -ait, -ions, -iez, -aient</span>. For <span class="fr">parler</span>: <span class="fr">nous parlons</span> → stem <span class="fr">parl-</span> → <span class="fr">je parlais, tu parlais, il parlait, nous parlions, vous parliez, ils parlaient</span>. The same rule covers verbs that are irregular in the present: <span class="fr">faire</span> → <span class="fr">nous faisons</span> → <span class="fr">fais-</span> → <span class="fr">je faisais</span>.</p>
+
+      <div class="rule-box">
+        <strong>Imparfait endings — same for every verb</strong><br>
+        je <span class="fr">-ais</span> &nbsp; tu <span class="fr">-ais</span> &nbsp; il/elle <span class="fr">-ait</span><br>
+        nous <span class="fr">-ions</span> &nbsp; vous <span class="fr">-iez</span> &nbsp; ils/elles <span class="fr">-aient</span><br><br>
+        <strong>être — the only truly irregular imparfait</strong><br>
+        <span class="fr">j'étais</span> <button class="play-btn" data-text="j'étais">▶</button>
+        &nbsp; <span class="fr">tu étais</span> &nbsp; <span class="fr">il était</span> <button class="play-btn" data-text="il était">▶</button><br>
+        <span class="fr">nous étions</span> &nbsp; <span class="fr">vous étiez</span> &nbsp; <span class="fr">ils étaient</span>
+      </div>
+
+      <p>The only verb that does not follow the nous-stem rule is <span class="fr">être</span> — its imparfait stem is <span class="fr">ét-</span>, not <span class="fr">somm-</span>. Everything else, no matter how irregular elsewhere in the language, plays by the rule. This is the cleanest tense in French to learn, which is a small mercy given how much it shows up.</p>
+
+      <p>In practice, the two past tenses are not used in isolation; they work together. The imparfait sets the scene, the passé composé interrupts it. <span class="fr">Il pleuvait quand je suis sorti</span> <button class="play-btn" data-text="il pleuvait quand je suis sorti">▶</button> — "it was raining (imparfait, ongoing) when I went out (passé composé, completed)." The imparfait gives you the backdrop; the passé composé delivers the event. Once you see that pattern in a few sentences, you will start hearing it everywhere in French stories — and you will know which tense to reach for instinctively.</p>
+    `,
+    examples: [
+      { fr: "Quand j'étais enfant, j'habitais à Paris.", en: 'When I was a child, I lived in Paris.', note: 'Imparfait for past habit / ongoing state.' },
+      { fr: 'Il pleuvait ce matin.', en: 'It was raining this morning.', note: 'Imparfait for ongoing past state.' },
+      { fr: 'Elle lisait un livre quand je suis arrivé.', en: 'She was reading a book when I arrived.', note: 'Imparfait backdrop + passé composé event — the classic pattern.' },
+      { fr: 'Nous allions au café tous les dimanches.', en: 'We used to go to the café every Sunday.', note: 'Imparfait for repeated past habit.' },
+      { fr: "Tu travaillais beaucoup à l'époque.", en: 'You worked a lot back then.', note: 'Imparfait for past description over time.' },
+      { fr: 'Il était fatigué, alors il est rentré.', en: 'He was tired, so he went home.', note: 'Imparfait state + passé composé action.' },
+      { fr: 'Vous habitiez où avant?', en: 'Where did you used to live?', note: 'Imparfait for past situation.' },
+      { fr: 'Les enfants jouaient dans le jardin.', en: 'The children were playing in the garden.', note: 'Imparfait for an ongoing past action.' },
+      { fr: 'Je voulais te parler.', en: 'I wanted to talk to you.', note: 'Imparfait for past mental states (vouloir, savoir, penser).' },
+      { fr: "C'était une belle journée.", en: 'It was a beautiful day.', note: 'Imparfait for past description.' }
+    ],
+    exercises: [
+      {
+        q: 'Which tense describes a habitual past action?',
+        options: ['Passé composé', 'Imparfait', 'Futur proche', 'Présent'],
+        correct: 1,
+        explanation: 'Imparfait is used for repeated or habitual past actions — things you used to do.'
+      },
+      {
+        q: 'Form the imparfait stem of parler. Start from nous parlons.',
+        options: ['parl-', 'parle-', 'parlons-', 'parlé-'],
+        correct: 0,
+        explanation: 'Drop -ons from nous parlons → parl-. Then add the imparfait endings.'
+      },
+      {
+        q: "Complete: Quand j'étais jeune, je ___ au football. (jouer)",
+        options: ['jouais', 'joué', 'joue', 'ai joué'],
+        correct: 0,
+        explanation: 'Habitual past action → imparfait. Stem jou- + ais → je jouais.'
+      },
+      {
+        q: 'Complete: Il ___ fatigué ce soir-là. (être)',
+        options: ['était', 'a été', 'est', 'avait'],
+        correct: 0,
+        explanation: 'Être in imparfait: j\'étais, tu étais, il était. Describing a past state.'
+      },
+      {
+        q: 'Which sentence uses imparfait correctly?',
+        options: [
+          "Hier, j'allais au marché et j'achetais du pain",
+          'Je mangeais une pizza quand il a appelé',
+          "J'ai été fatigué tous les jours",
+          'Il pleuvait hier pendant cinq minutes exactement'
+        ],
+        correct: 1,
+        explanation: 'Imparfait (ongoing action) interrupted by passé composé (completed event) — the classic pattern.'
+      },
+      {
+        q: 'Complete: Nous ___ à la plage chaque été. (aller)',
+        options: ['allions', 'sommes allés', 'allons', 'irons'],
+        correct: 0,
+        explanation: 'Repeated past habit → imparfait. Nous allons → stem all- + ions → nous allions.'
+      },
+      {
+        q: 'What is the imparfait of faire for il? (nous faisons → fais-)',
+        options: ['faisait', 'faisé', 'a fait', 'faisait-il'],
+        correct: 0,
+        explanation: 'Faire imparfait stem: fais- (from nous faisons). + ait → il faisait.'
+      },
+      {
+        q: 'Choose the correct tenses: Elle ___ (lire) quand le téléphone ___ (sonner).',
+        options: ['lisait / a sonné', 'lisait / sonnait', 'a lu / a sonné', 'a lu / sonnait'],
+        correct: 0,
+        explanation: 'Ongoing action (imparfait) interrupted by a completed event (passé composé). Elle lisait quand le téléphone a sonné.'
+      }
+    ]
   }
 ];
 
