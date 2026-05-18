@@ -367,8 +367,15 @@ function checkExercisesComplete(lesson) {
     completeBtn.addEventListener('click', async () => {
       completeBtn.disabled = true;
       completeBtn.textContent = 'Saving...';
-      await markComplete(lesson.id);
-      checkExercisesComplete(lesson); // re-render summary
+      try {
+        await markComplete(lesson.id);
+      } catch (err) {
+        console.warn('markComplete failed:', err);
+      } finally {
+        completeBtn.disabled = false;
+        completeBtn.textContent = 'Complete lesson';
+        checkExercisesComplete(lesson); // always re-render summary
+      }
     });
   }
   const nextLessonBtn = document.getElementById('nextLessonBtn');
@@ -560,22 +567,38 @@ function playEpisode(episode, cardEl, rate) {
 // AUTH & PROGRESS (Supabase + localStorage fallback)
 // ============================================================
 
-async function markComplete(lessonId) {
-  completedLessons.add(lessonId);
-  if (supabaseClient && session) {
-    try {
-      await supabaseClient
-        .from('progress')
-        .upsert({ user_id: session.user.id, lesson_id: lessonId }, { onConflict: 'user_id,lesson_id' });
-    } catch (err) {
-      console.warn('Could not save progress to Supabase:', err);
-    }
-  } else {
+function saveProgressLocal(lessonId) {
+  try {
     const p = JSON.parse(localStorage.getItem('frenchProgress') || '{}');
     p[lessonId] = true;
     localStorage.setItem('frenchProgress', JSON.stringify(p));
+  } catch (err) {
+    console.warn('Could not save progress to localStorage:', err);
   }
-  updateProgressUI();
+}
+
+async function markComplete(lessonId) {
+  completedLessons.add(lessonId);
+  try {
+    if (supabaseClient && session) {
+      const savePromise = supabaseClient
+        .from('progress')
+        .upsert({ user_id: session.user.id, lesson_id: lessonId }, { onConflict: 'user_id,lesson_id' });
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Supabase save timed out after 5s')), 5000)
+      );
+      try {
+        await Promise.race([savePromise, timeoutPromise]);
+      } catch (err) {
+        console.warn('Could not save progress to Supabase, falling back to localStorage:', err);
+        saveProgressLocal(lessonId);
+      }
+    } else {
+      saveProgressLocal(lessonId);
+    }
+  } finally {
+    updateProgressUI();
+  }
 }
 
 async function loadProgress() {
