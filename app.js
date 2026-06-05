@@ -99,7 +99,7 @@ document.addEventListener('click', (e) => {
 // ROUTING / NAVIGATION
 // ============================================================
 
-const PAGES = ['home', 'lesson', 'vocabulary', 'audio-lessons', 'login'];
+const PAGES = ['home', 'lesson', 'vocabulary', 'audio-lessons', 'podcasts', 'login'];
 
 function showPage(page, opts = {}) {
   stopSpeech();
@@ -413,7 +413,7 @@ document.getElementById('prevPhaseBtn').addEventListener('click', () => {
 // VOCABULARY PAGE
 // ============================================================
 
-const CATEGORIES = ['Essentials', 'Greetings', 'Numbers', 'Days & Months', 'Food & Drink', 'Travel', 'Work', 'Adjectives', 'Verbs'];
+const CATEGORIES = ['Essentials', 'Greetings', 'Numbers', 'Days & Months', 'Food & Drink', 'Travel', 'Work', 'Body & Health', 'Adjectives', 'Verbs'];
 
 function renderCategoryTabs() {
   const wrap = document.getElementById('catTabs');
@@ -561,6 +561,37 @@ function playEpisode(episode, cardEl, rate) {
     speak(episode.dialogue[i].fr, rate, () => playLine(i + 1));
   }
   playLine(0);
+}
+
+// ============================================================
+// PODCASTS
+// ============================================================
+
+function renderPodcasts() {
+  const wrap = document.getElementById('podcastList');
+  if (!wrap) return;
+  const list = (window.PODCASTS || []);
+  wrap.innerHTML = '';
+  list.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'podcast';
+    const episodes = (p.episodes || []).map(ep => `
+      <li><a href="${escapeAttr(ep.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(ep.title)}</a></li>
+    `).join('');
+    card.innerHTML = `
+      <div class="podcast-meta">
+        <span class="podcast-level">${escapeHtml(p.level)}</span>
+        <span>${escapeHtml(p.host)}</span>
+      </div>
+      <h3 class="podcast-title">${escapeHtml(p.name)}</h3>
+      <p class="podcast-desc">${escapeHtml(p.description)}</p>
+      ${episodes ? `<div class="podcast-section-label">Recommended episodes</div><ul class="podcast-episodes">${episodes}</ul>` : ''}
+      <div class="podcast-actions">
+        <a class="btn btn-gold" href="${escapeAttr(p.url)}" target="_blank" rel="noopener noreferrer">Visit ${escapeHtml(p.site)} ↗</a>
+      </div>
+    `;
+    wrap.appendChild(card);
+  });
 }
 
 // ============================================================
@@ -726,6 +757,7 @@ async function init() {
   renderCategoryTabs();
   renderCategoryGrid();
   renderEpisodes();
+  renderPodcasts();
 
   if (supabaseClient) {
     try {

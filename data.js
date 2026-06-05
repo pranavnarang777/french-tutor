@@ -700,6 +700,446 @@ const LESSONS = [
         explanation: 'Ongoing action (imparfait) interrupted by a completed event (passé composé). Elle lisait quand le téléphone a sonné.'
       }
     ]
+  },
+
+  {
+    id: 'lesson-9',
+    title: 'Adjective Agreement & Placement',
+    subtitle: 'Why adjectives change form — and why most go after the noun.',
+    theory: `
+      <p>In French, an adjective must agree with the noun it describes in both gender and number. This means a single adjective has up to four written forms: masculine singular, feminine singular, masculine plural, and feminine plural. The masculine singular is the dictionary form — the one you find in any vocabulary list — and every other form is derived from it. Once you internalise that the adjective bends to fit the noun, half of French sentence construction stops feeling unpredictable.</p>
+
+      <p>The default rules are clean. Add <span class="fr">-e</span> for feminine: <span class="fr">grand</span> → <span class="fr">grande</span> <button class="play-btn" data-text="grande">▶</button>. Add <span class="fr">-s</span> for masculine plural: <span class="fr">grand</span> → <span class="fr">grands</span>. Add <span class="fr">-es</span> for feminine plural: <span class="fr">grand</span> → <span class="fr">grandes</span>. If the masculine form already ends in <span class="fr">-e</span>, no extra <span class="fr">-e</span> is added for the feminine: <span class="fr">jeune</span> stays <span class="fr">jeune</span>. If it already ends in <span class="fr">-s</span>, no extra <span class="fr">-s</span> is added for the masculine plural: <span class="fr">gris</span> stays <span class="fr">gris</span>.</p>
+
+      <div class="rule-box">
+        <strong>Common irregular feminine endings</strong><br>
+        <span class="fr">-eux</span> → <span class="fr">-euse</span> &nbsp; <em>heureux / heureuse</em><br>
+        <span class="fr">-if</span> → <span class="fr">-ive</span> &nbsp; <em>actif / active</em><br>
+        <span class="fr">-el</span> → <span class="fr">-elle</span> &nbsp; <em>naturel / naturelle</em><br>
+        <span class="fr">-er</span> → <span class="fr">-ère</span> &nbsp; <em>premier / première</em><br>
+        <span class="fr">-on</span> → <span class="fr">-onne</span> &nbsp; <em>bon / bonne</em><br>
+        <span class="fr">-en</span> → <span class="fr">-enne</span> &nbsp; <em>ancien / ancienne</em><br><br>
+        <strong>Fully irregular:</strong> beau / belle, nouveau / nouvelle, vieux / vieille
+      </div>
+
+      <p>Some adjectives have irregular feminine forms that must be memorised. The most common patterns are listed above. <span class="fr">Heureux</span> becomes <span class="fr">heureuse</span> <button class="play-btn" data-text="heureuse">▶</button>, <span class="fr">actif</span> becomes <span class="fr">active</span>, <span class="fr">bon</span> becomes <span class="fr">bonne</span>. The fully irregular ones — <span class="fr">beau / belle</span>, <span class="fr">nouveau / nouvelle</span>, <span class="fr">vieux / vieille</span> — appear constantly, so memorising them early pays off.</p>
+
+      <p>Placement is the second piece of the puzzle. Unlike English, where every adjective precedes its noun, most French adjectives come <em>after</em> the noun. <span class="fr">Une voiture rouge</span> <button class="play-btn" data-text="une voiture rouge">▶</button>, <span class="fr">un homme intelligent</span>, <span class="fr">une idée intéressante</span>. The exceptions are the so-called <strong>BANGS</strong> adjectives — <strong>B</strong>eauty, <strong>A</strong>ge, <strong>N</strong>umber, <strong>G</strong>oodness, <strong>S</strong>ize — which precede the noun: <span class="fr">beau, joli, vieux, jeune, nouveau, ancien, bon, mauvais, grand, petit, gros, long, haut</span>.</p>
+
+      <p>A handful of adjectives change meaning depending on placement, and this distinction is one of the small details that separates a good speaker from a great one. <span class="fr">Un grand homme</span> means a <em>great</em> man (figurative); <span class="fr">un homme grand</span> means a <em>tall</em> man (literal). <span class="fr">Un ancien collègue</span> is a <em>former</em> colleague; <span class="fr">un collègue ancien</span> is a colleague who is <em>very old</em>. The same applies to <span class="fr">cher</span> (dear / expensive), <span class="fr">propre</span> (own / clean), and a few others. Position is grammar, but it is also meaning.</p>
+    `,
+    examples: [
+      { fr: 'une voiture rouge', en: 'a red car', note: 'Adjective after the noun — the standard position.' },
+      { fr: 'un grand appartement', en: 'a large apartment', note: 'Grand is BANGS (Size) — before the noun.' },
+      { fr: 'une femme intelligente', en: 'an intelligent woman', note: 'Add -e for feminine: intelligent → intelligente.' },
+      { fr: 'des enfants heureux', en: 'happy children', note: '-eux stays -eux in masculine plural.' },
+      { fr: 'des femmes heureuses', en: 'happy women', note: '-eux → -euse → -euses for feminine plural.' },
+      { fr: 'une belle maison', en: 'a beautiful house', note: 'Beau → belle (irregular feminine). BANGS — before noun.' },
+      { fr: 'un nouveau projet', en: 'a new project', note: 'Nouveau is BANGS — before the noun.' },
+      { fr: 'une ancienne collègue', en: 'a former colleague', note: 'Ancien before noun = figurative (former).' },
+      { fr: 'une collègue ancienne', en: 'a very old colleague', note: 'Ancien after noun = literal (aged).' },
+      { fr: 'de bons restaurants', en: 'some good restaurants', note: 'Bon → bons. Before the noun, des → de.' }
+    ],
+    exercises: [
+      {
+        q: 'Where does rouge go in: une voiture ___?',
+        options: ['before the noun', 'after the noun', 'either position', 'it depends on gender'],
+        correct: 1,
+        explanation: 'Rouge is not a BANGS adjective. Most adjectives follow the noun in French.'
+      },
+      {
+        q: 'Make grand agree: une ___ ville (feminine).',
+        options: ['grand', 'grande', 'grands', 'grandes'],
+        correct: 1,
+        explanation: 'Ville is feminine singular. Add -e to grand → grande.'
+      },
+      {
+        q: 'Which is a BANGS adjective that goes before the noun?',
+        options: ['rouge', 'intelligent', 'petit', 'intéressant'],
+        correct: 2,
+        explanation: 'Petit is a Size adjective — part of BANGS. It precedes the noun: un petit café.'
+      },
+      {
+        q: 'Make heureux feminine singular.',
+        options: ['heureuse', 'heureuxe', 'heureusse', 'heureuxes'],
+        correct: 0,
+        explanation: '-eux → -euse in the feminine. Heureux → heureuse.'
+      },
+      {
+        q: 'Which sentence means "a great man"?',
+        options: ['Un homme grand', 'Un grand homme', 'Un homme de grand', 'Un homme grande'],
+        correct: 1,
+        explanation: 'Grand before the noun = great (figurative). After the noun, it means tall.'
+      },
+      {
+        q: 'Make beau feminine.',
+        options: ['belle', 'beaue', 'beau', 'beaux'],
+        correct: 0,
+        explanation: 'Beau → belle is irregular and must be memorised. Un beau garçon, une belle fille.'
+      },
+      {
+        q: "Complete: C'est une idée ___. (intéressant)",
+        options: ['intéressant', 'intéressante', 'intéressants', 'intéressantes'],
+        correct: 1,
+        explanation: 'Idée is feminine singular. Intéressant + e = intéressante. Adjective follows the noun.'
+      },
+      {
+        q: "Which means 'a former president'?",
+        options: ['un président ancien', 'un ancien président', 'un vieux président', 'un président vieux'],
+        correct: 1,
+        explanation: 'Ancien before the noun = former. Ancien after the noun = very old.'
+      }
+    ]
+  },
+
+  {
+    id: 'lesson-10',
+    title: 'Pronouns',
+    subtitle: 'Direct objects, indirect objects, and reflexive verbs.',
+    theory: `
+      <p>Pronouns replace nouns to avoid repetition — and used well, they are one of the clearest markers of a fluent French speaker. French has several kinds, but three are essential for daily speech: direct object pronouns, indirect object pronouns, and reflexive pronouns. Once you can place them confidently in a sentence, your French stops sounding like a translation.</p>
+
+      <p><em>Direct object pronouns</em> replace the noun that directly receives the verb's action — the thing being seen, eaten, done. The forms are <span class="fr">me</span> (me), <span class="fr">te</span> (you), <span class="fr">le</span> (him/it masc.), <span class="fr">la</span> (her/it fem.), <span class="fr">nous</span> (us), <span class="fr">vous</span> (you pl.), and <span class="fr">les</span> (them). <span class="fr">Je mange la pizza</span> becomes <span class="fr">je la mange</span> <button class="play-btn" data-text="je la mange">▶</button>. <span class="fr">Tu vois Pierre?</span> becomes <span class="fr">Tu le vois?</span></p>
+
+      <p><em>Indirect object pronouns</em> replace nouns preceded by <span class="fr">à</span> — usually people. The forms are <span class="fr">me</span> (to me), <span class="fr">te</span> (to you), <span class="fr">lui</span> (to him/her), <span class="fr">nous</span> (to us), <span class="fr">vous</span> (to you pl.), and <span class="fr">leur</span> (to them). <span class="fr">Je parle à Marie</span> becomes <span class="fr">je lui parle</span> <button class="play-btn" data-text="je lui parle">▶</button>. <span class="fr">Il téléphone à ses parents</span> becomes <span class="fr">il leur téléphone</span>. Crucially, <span class="fr">lui</span> and <span class="fr">leur</span> do not change for gender — one form covers both.</p>
+
+      <div class="rule-box">
+        <strong>Word order — both kinds of pronoun</strong><br>
+        Both go <em>directly before</em> the conjugated verb. This is the opposite of English.<br><br>
+        Affirmative: <span class="fr">Je le vois.</span> &nbsp; <em>(I see him.)</em><br>
+        Negative: <span class="fr">Je ne le vois pas.</span> &nbsp; <em>(Ne before the pronoun.)</em><br>
+        Passé composé: <span class="fr">Je l'ai vu.</span> &nbsp; <em>(Before the auxiliary, not the participle.)</em>
+      </div>
+
+      <p>Both types go <em>directly before</em> the conjugated verb in French — the opposite of English word order. In negation, <span class="fr">ne</span> comes before the pronoun: <span class="fr">je ne le vois pas</span>. In the passé composé, the pronoun goes before the auxiliary, not after the participle: <span class="fr">je l'ai vu</span> <button class="play-btn" data-text="je l'ai vu">▶</button>, never "j'ai le vu." This placement feels unnatural for English speakers and is worth drilling until it becomes reflex.</p>
+
+      <p><em>Reflexive verbs</em> describe actions done to oneself and carry their own family of pronouns: <span class="fr">me, te, se, nous, vous, se</span>. Common reflexives include <span class="fr">se lever</span> (to get up), <span class="fr">se coucher</span> (to go to bed), <span class="fr">se laver</span> (to wash), <span class="fr">s'appeler</span> (to be called), and <span class="fr">se sentir</span> (to feel). In the passé composé, reflexive verbs always use <span class="fr">être</span> as auxiliary, and the past participle agrees with the subject: <span class="fr">je me suis levé</span> <button class="play-btn" data-text="je me suis levé">▶</button> (male speaker) or <span class="fr">je me suis levée</span> (female speaker).</p>
+    `,
+    examples: [
+      { fr: 'Tu vois Marie? Oui, je la vois.', en: 'Do you see Marie? Yes, I see her.', note: 'la = direct object, feminine singular.' },
+      { fr: 'Il mange le gâteau? Oui, il le mange.', en: "Is he eating the cake? Yes, he's eating it.", note: 'le = direct object, masculine singular.' },
+      { fr: 'Tu parles à Pierre? Oui, je lui parle.', en: 'Do you talk to Pierre? Yes, I talk to him.', note: 'lui = indirect object, singular.' },
+      { fr: 'Il téléphone à ses parents? Oui, il leur téléphone.', en: 'Does he call his parents? Yes, he calls them.', note: 'leur = indirect object, plural.' },
+      { fr: 'Je ne le connais pas.', en: "I don't know him.", note: 'Pronoun before verb; ne before pronoun.' },
+      { fr: "Je l'ai vu hier.", en: 'I saw him yesterday.', note: 'Pronoun before the auxiliary in passé composé.' },
+      { fr: "Comment tu t'appelles?", en: "What's your name?", note: "Reflexive: s'appeler. Te → t' before a vowel." },
+      { fr: 'Je me lève à 7h.', en: 'I get up at 7.', note: 'Reflexive: se lever.' },
+      { fr: "Elle s'est couchée tard.", en: 'She went to bed late.', note: 'Reflexive + être + agreement: couchée.' },
+      { fr: 'Nous nous sommes levés tôt.', en: 'We got up early.', note: 'Reflexive plural + masculine agreement.' }
+    ],
+    exercises: [
+      {
+        q: 'Replace the object: Je mange la pizza → Je ___ mange.',
+        options: ['le', 'la', 'les', 'lui'],
+        correct: 1,
+        explanation: 'Pizza is feminine → la. The direct object pronoun goes before the verb.'
+      },
+      {
+        q: 'Replace: Tu vois les enfants? → Tu ___ vois?',
+        options: ['le', 'la', 'les', 'leur'],
+        correct: 2,
+        explanation: 'Les enfants is plural → les. Direct object pronoun.'
+      },
+      {
+        q: 'Replace: Je parle à Marie → Je ___ parle.',
+        options: ['la', 'le', 'lui', 'leur'],
+        correct: 2,
+        explanation: 'À Marie → indirect object → lui (for both masculine and feminine singular).'
+      },
+      {
+        q: 'Where does the pronoun go in a negative sentence?',
+        options: ['After pas', 'Before the verb', 'After the verb', 'After ne'],
+        correct: 1,
+        explanation: 'Ne + pronoun + verb + pas. Je ne le vois pas.'
+      },
+      {
+        q: 'Which is the reflexive form of lever for je?',
+        options: ['je lève', 'je me lève', 'je se lève', 'je te lève'],
+        correct: 1,
+        explanation: 'Se lever is reflexive. Je → me. Je me lève.'
+      },
+      {
+        q: "Complete: Comment tu t'___? (s'appeler)",
+        options: ['appelles', 'appelle', 'appellent', 'appeler'],
+        correct: 0,
+        explanation: "S'appeler, tu form. Te contracts to t' before a vowel. Tu t'appelles."
+      },
+      {
+        q: 'In the passé composé, where does the object pronoun go?',
+        options: ['After the past participle', 'Before the auxiliary', 'After the auxiliary', 'Before ne'],
+        correct: 1,
+        explanation: "Je l'ai vu — the pronoun comes before avoir/être, not after."
+      },
+      {
+        q: 'Which verb uses être as auxiliary in the passé composé?',
+        options: ['manger', 'parler', 'se lever', 'avoir'],
+        correct: 2,
+        explanation: 'All reflexive verbs use être in the passé composé. Je me suis levé.'
+      }
+    ]
+  },
+
+  {
+    id: 'lesson-11',
+    title: 'Prepositions & Linking Words',
+    subtitle: 'Connecting ideas and navigating space and time in French.',
+    theory: `
+      <p>Prepositions are small words that establish relationships between other words — location, direction, time, cause, manner. French prepositions often do not map neatly onto their English equivalents, so translating word-for-word produces sentences that are technically intelligible but unmistakably foreign. The best approach is to learn each preposition with the kind of phrase it tends to appear in, rather than as an isolated definition.</p>
+
+      <p>The core <em>location</em> prepositions: <span class="fr">à</span> (at / in / to — for cities and certain locations), <span class="fr">en</span> (in — for most countries, regions, months, and years), <span class="fr">dans</span> (in — for physical spaces you are inside), <span class="fr">sur</span> (on), <span class="fr">sous</span> (under), <span class="fr">devant</span> (in front of), <span class="fr">derrière</span> (behind), <span class="fr">entre</span> (between), <span class="fr">près de</span> (near), <span class="fr">loin de</span> (far from). So: <span class="fr">je suis à Paris</span> <button class="play-btn" data-text="je suis à Paris">▶</button>, <span class="fr">je suis en France</span>, <span class="fr">je suis dans le café</span>.</p>
+
+      <p>Recall from earlier lessons that <span class="fr">à</span> and <span class="fr">de</span> contract with <span class="fr">le</span> and <span class="fr">les</span>: <span class="fr">à + le = au</span>, <span class="fr">à + les = aux</span>, <span class="fr">de + le = du</span>, <span class="fr">de + les = des</span>. No contraction with <span class="fr">la</span> or <span class="fr">l'</span>. The rule mattered for articles; now that prepositions are multiplying, it matters more. <span class="fr">Je vais au cinéma</span> <button class="play-btn" data-text="je vais au cinéma">▶</button>, <span class="fr">je reviens du bureau</span>.</p>
+
+      <div class="rule-box">
+        <strong>Time prepositions — easy to confuse</strong><br>
+        <span class="fr">pendant</span> — during / for &nbsp; <em>J'ai attendu pendant une heure.</em><br>
+        <span class="fr">depuis</span> — since / for (with present tense) &nbsp; <em>J'apprends le français depuis six mois.</em><br>
+        <span class="fr">dans</span> — in (future time) &nbsp; <em>Je viendrai dans deux jours.</em><br>
+        <span class="fr">il y a</span> — ago &nbsp; <em>Il est parti il y a deux jours.</em><br>
+        <span class="fr">avant</span> — before &nbsp; <span class="fr">après</span> — after
+      </div>
+
+      <p>Time prepositions are a separate skill, and they are where many learners trip up. <span class="fr">Pendant</span> means "during" or "for" with completed durations. <span class="fr">Depuis</span> means "since" or "for" and pairs with the present tense to describe situations that started in the past and are still happening: <span class="fr">j'apprends le français depuis six mois</span> <button class="play-btn" data-text="j'apprends le français depuis six mois">▶</button>. <span class="fr">Dans</span> with a time expression means "in" the future. <span class="fr">Il y a</span> means "ago" — counting backwards from now.</p>
+
+      <p>Finally, <em>linking words</em> (conjunctions and connectors) are what turn a list of sentences into actual speech. The essential set: <span class="fr">et</span> (and), <span class="fr">mais</span> (but), <span class="fr">ou</span> (or), <span class="fr">donc</span> (so / therefore), <span class="fr">parce que</span> (because), <span class="fr">quand</span> (when), <span class="fr">si</span> (if), <span class="fr">que</span> (that), <span class="fr">comme</span> (as / since), <span class="fr">pourtant</span> (however / yet), <span class="fr">alors</span> (so / then), <span class="fr">puis</span> (then / next), <span class="fr">enfin</span> (finally / well). These are the joints of the language — using them naturally is the difference between speaking French and listing French sentences.</p>
+    `,
+    examples: [
+      { fr: 'Je suis à Bruxelles.', en: "I'm in Brussels.", note: 'À for cities.' },
+      { fr: 'Elle habite en Belgique.', en: 'She lives in Belgium.', note: 'En for feminine countries.' },
+      { fr: 'Il travaille dans un bureau.', en: 'He works in an office.', note: 'Dans for a physical interior.' },
+      { fr: 'Le café est sur la table.', en: 'The coffee is on the table.', note: 'Sur = on.' },
+      { fr: "J'apprends le français depuis trois mois.", en: "I've been learning French for three months.", note: 'Depuis + present tense for ongoing situations.' },
+      { fr: 'Il est parti il y a une semaine.', en: 'He left a week ago.', note: 'Il y a = ago.' },
+      { fr: 'Je viendrai dans deux jours.', en: "I'll come in two days.", note: 'Dans for future time.' },
+      { fr: 'Je préfère le thé mais je bois du café.', en: 'I prefer tea but I drink coffee.', note: 'Mais = but.' },
+      { fr: 'Je suis fatigué donc je rentre.', en: "I'm tired so I'm going home.", note: 'Donc = therefore.' },
+      { fr: 'Il fait froid, pourtant elle ne porte pas de manteau.', en: "It's cold, yet she's not wearing a coat.", note: 'Pourtant = yet / however.' }
+    ],
+    exercises: [
+      {
+        q: 'Complete: Je vais ___ Paris demain.',
+        options: ['en', 'dans', 'à', 'sur'],
+        correct: 2,
+        explanation: 'À is used for cities. En is for countries and regions.'
+      },
+      {
+        q: 'Complete: Elle habite ___ France.',
+        options: ['à', 'en', 'dans', 'au'],
+        correct: 1,
+        explanation: 'En is used for feminine countries. France is feminine → en France.'
+      },
+      {
+        q: 'Complete: Le livre est ___ la table.',
+        options: ['sur', 'sous', 'dans', 'devant'],
+        correct: 0,
+        explanation: 'Sur = on top of. Le livre est sur la table.'
+      },
+      {
+        q: "Complete: J'apprends le français ___ six mois. (ongoing, started in the past)",
+        options: ['pendant', 'depuis', 'dans', 'il y a'],
+        correct: 1,
+        explanation: 'Depuis + present tense for situations that started in the past and are still ongoing.'
+      },
+      {
+        q: 'Complete: Il est parti ___ trois jours. (three days ago)',
+        options: ['depuis', 'dans', 'pendant', 'il y a'],
+        correct: 3,
+        explanation: 'Il y a = ago. Il est parti il y a trois jours.'
+      },
+      {
+        q: 'Choose the correct linking word: Je veux venir, ___ je suis occupé. (but)',
+        options: ['donc', 'mais', 'parce que', 'alors'],
+        correct: 1,
+        explanation: 'Mais = but. It expresses contrast.'
+      },
+      {
+        q: "Complete: Je suis fatigué ___ j'ai mal dormi. (because)",
+        options: ['donc', 'mais', 'parce que', 'pourtant'],
+        correct: 2,
+        explanation: 'Parce que = because. It introduces a reason.'
+      },
+      {
+        q: 'Complete: Je vais au cinéma ___ je rentrerai tard. (so)',
+        options: ['mais', 'parce que', 'donc', 'depuis'],
+        correct: 2,
+        explanation: 'Donc = so / therefore. It introduces a consequence.'
+      }
+    ]
+  },
+
+  {
+    id: 'lesson-12',
+    title: 'Modal Verbs',
+    subtitle: 'Vouloir, pouvoir, devoir — wanting, being able to, and having to.',
+    theory: `
+      <p>Modal verbs express ability, permission, obligation, or desire rather than concrete actions. In French the three essential modals are <span class="fr">vouloir</span> (to want), <span class="fr">pouvoir</span> (to be able to / can), and <span class="fr">devoir</span> (to have to / must). A fourth verb, <span class="fr">savoir</span>, sits alongside them and expresses knowing how to do something — distinct from the physical ability or permission expressed by <span class="fr">pouvoir</span>. Together these four verbs cover most of what you need to say about possibility, obligation, and intention.</p>
+
+      <p>All three core modals are irregular in the present tense and must be memorised. <span class="fr">Vouloir</span>: <span class="fr">je veux, tu veux, il veut, nous voulons, vous voulez, ils veulent</span> <button class="play-btn" data-text="je veux, tu veux, il veut, nous voulons, vous voulez, ils veulent">▶</button>. <span class="fr">Pouvoir</span>: <span class="fr">je peux, tu peux, il peut, nous pouvons, vous pouvez, ils peuvent</span>. <span class="fr">Devoir</span>: <span class="fr">je dois, tu dois, il doit, nous devons, vous devez, ils doivent</span>. Notice the recurring pattern of <em>oi/eu</em> in singular forms switching to <em>ou/eu</em> in plural — it shows up in many irregular French verbs.</p>
+
+      <div class="rule-box">
+        <strong>Structure: modal + infinitive</strong><br>
+        <span class="fr">Je veux manger.</span> &nbsp; <em>I want to eat.</em><br>
+        <span class="fr">Tu peux venir?</span> &nbsp; <em>Can you come?</em><br>
+        <span class="fr">Il doit travailler.</span> &nbsp; <em>He has to work.</em><br>
+        <em>Never conjugate both verbs — the modal is conjugated, the second verb stays in the infinitive.</em>
+      </div>
+
+      <p>These verbs are almost always followed by an infinitive — the unconjugated dictionary form of another verb. <span class="fr">Je veux manger</span>, <span class="fr">tu peux venir</span>, <span class="fr">il doit travailler</span>. Never conjugate both verbs. The modal carries the tense and person; the infinitive carries the meaning of the action itself.</p>
+
+      <p>The <em>conditional</em> forms of these verbs are essential for sounding polite — and they are heard everywhere in shops, restaurants, and any situation involving strangers. <span class="fr">Je voudrais</span> <button class="play-btn" data-text="je voudrais un café">▶</button> (I would like) is far more common than <span class="fr">je veux</span> (I want), which can sound blunt to the point of rudeness. <span class="fr">Je pourrais</span> (I could) softens requests. <span class="fr">Je devrais</span> (I should) expresses a gentler obligation than <span class="fr">je dois</span>. Learning these polite forms is not optional — they are how adult French speech operates.</p>
+
+      <p>Finally, the distinction between <span class="fr">savoir</span> and <span class="fr">pouvoir</span> is worth getting right. <span class="fr">Savoir</span> + infinitive means to know how to do something through learned skill: <span class="fr">je sais nager</span> means "I know how to swim" — I have learned. <span class="fr">Pouvoir</span> + infinitive means to be physically able to or to be permitted: <span class="fr">je peux nager</span> means "I'm able to swim" right now, or "I'm allowed to swim." If someone asks <span class="fr">tu sais conduire?</span>, they are asking whether you have learned. If they ask <span class="fr">tu peux conduire?</span>, they want to know if you can right now — perhaps you have not been drinking, perhaps you have a car available.</p>
+    `,
+    examples: [
+      { fr: "Je veux apprendre le français.", en: 'I want to learn French.', note: 'Vouloir + infinitive.' },
+      { fr: "Je voudrais un café, s'il vous plaît.", en: "I'd like a coffee, please.", note: 'Conditional — polite form.' },
+      { fr: "Tu peux m'aider?", en: 'Can you help me?', note: 'Pouvoir + infinitive.' },
+      { fr: 'Je ne peux pas venir ce soir.', en: "I can't come tonight.", note: 'Negation with pouvoir.' },
+      { fr: 'Il doit partir à 8h.', en: 'He has to leave at 8.', note: 'Devoir + infinitive — obligation.' },
+      { fr: "Vous devez réserver à l'avance.", en: 'You must book in advance.', note: 'Devoir — formal obligation.' },
+      { fr: 'Je sais parler français.', en: 'I know how to speak French.', note: 'Savoir = learned ability.' },
+      { fr: 'Tu sais nager?', en: 'Do you know how to swim?', note: 'Savoir, not pouvoir — testing skill.' },
+      { fr: 'Je pourrais vous rappeler?', en: 'Could I call you back?', note: 'Conditional — polite request.' },
+      { fr: "On devrait y aller.", en: 'We should go.', note: 'Devoir conditional — suggestion.' }
+    ],
+    exercises: [
+      {
+        q: 'Conjugate vouloir for je.',
+        options: ['veux', 'voulez', 'veut', 'voulons'],
+        correct: 0,
+        explanation: 'Vouloir: je veux, tu veux, il veut, nous voulons, vous voulez, ils veulent.'
+      },
+      {
+        q: 'Complete: Tu ___ venir avec nous? (pouvoir)',
+        options: ['peux', 'peut', 'pouvez', 'peuvent'],
+        correct: 0,
+        explanation: 'Pouvoir: tu peux. Modal + infinitive — venir stays unconjugated.'
+      },
+      {
+        q: 'Complete: Il ___ travailler ce weekend. (devoir)',
+        options: ['doit', 'dois', 'devons', 'doivent'],
+        correct: 0,
+        explanation: 'Devoir: il doit. He has to work this weekend.'
+      },
+      {
+        q: 'Which is more polite in a restaurant?',
+        options: ['Je veux un café', 'Je voudrais un café', 'Je dois un café', 'Je peux un café'],
+        correct: 1,
+        explanation: 'Voudrais is the conditional of vouloir. It softens the request — "I would like" rather than "I want."'
+      },
+      {
+        q: "Complete: Je ___ nager depuis l'âge de 5 ans. (know how to)",
+        options: ['peux', 'veux', 'sais', 'dois'],
+        correct: 2,
+        explanation: 'Savoir = to know how to (learned skill). Je sais nager.'
+      },
+      {
+        q: 'What follows a modal verb?',
+        options: ['A conjugated verb', 'An infinitive', 'A past participle', 'An adjective'],
+        correct: 1,
+        explanation: 'Modal + infinitive. Je veux manger, not "je veux mange."'
+      },
+      {
+        q: 'Complete: Nous ___ réserver une table. (should — use conditional)',
+        options: ['devons', 'devrions', 'voulons', 'pouvons'],
+        correct: 1,
+        explanation: 'Devoir conditional: je devrais, tu devrais, il devrait, nous devrions. Softer than nous devons.'
+      },
+      {
+        q: 'Complete: ___ vous m\'expliquer? (Could you — polite)',
+        options: ['Voulez', 'Pouvez', 'Devez', 'Savez'],
+        correct: 1,
+        explanation: 'Pouvoir = can / be able to. Pouvez-vous = Can you? For extra politeness use pourriez-vous (conditional).'
+      }
+    ]
+  },
+
+  {
+    id: 'lesson-13',
+    title: 'The Subjunctive',
+    subtitle: 'Expressing doubt, emotion, necessity, and subjectivity.',
+    theory: `
+      <p>The <em>subjunctive</em> (<span class="fr">le subjonctif</span>) is a verb <em>mood</em>, not a tense. It is used to express subjectivity: doubt, emotion, necessity, possibility, or personal judgement. In English the subjunctive has nearly disappeared — we say "I suggest that he <em>be</em> present" only in stiff formal writing. In French, by contrast, the subjunctive is fully alive and used daily. Learning to recognise its triggers is one of the hurdles between intermediate and advanced fluency.</p>
+
+      <p>The subjunctive almost always appears in a subordinate clause introduced by <span class="fr">que</span>, following a main clause that expresses one of the trigger meanings — emotion, doubt, desire, necessity, or judgement. <span class="fr">Il faut que tu viennes</span> <button class="play-btn" data-text="il faut que tu viennes">▶</button>, <span class="fr">je veux que tu sois là</span> <button class="play-btn" data-text="je veux que tu sois là">▶</button>, <span class="fr">je doute qu'il sache</span>. The trigger sits in the main clause; the subjunctive appears after <span class="fr">que</span>.</p>
+
+      <p>To form the present subjunctive of a regular verb: take the <span class="fr">ils/elles</span> form of the present tense, drop the <span class="fr">-ent</span> ending, and add the subjunctive endings: <span class="fr">-e, -es, -e, -ions, -iez, -ent</span>. For <span class="fr">parler</span>: <span class="fr">ils parlent</span> → stem <span class="fr">parl-</span> → <span class="fr">que je parle, que tu parles, qu'il parle, que nous parlions, que vous parliez, qu'ils parlent</span>. The <span class="fr">nous</span> and <span class="fr">vous</span> forms happen to be identical to the imparfait — a small mercy.</p>
+
+      <div class="rule-box">
+        <strong>Key irregular subjunctives</strong><br>
+        être → <span class="fr">que je sois, tu sois, il soit, nous soyons, vous soyez, ils soient</span><br>
+        avoir → <span class="fr">que j'aie, tu aies, il ait, nous ayons, vous ayez, ils aient</span><br>
+        aller → <span class="fr">que j'aille</span> &nbsp; faire → <span class="fr">que je fasse</span><br>
+        pouvoir → <span class="fr">que je puisse</span> &nbsp; vouloir → <span class="fr">que je veuille</span><br>
+        savoir → <span class="fr">que je sache</span>
+      </div>
+
+      <p>A handful of irregular subjunctives must be memorised because they are the most common verbs in the language. <span class="fr">Être</span> and <span class="fr">avoir</span> are the priorities — they alone will appear in most of your subjunctive sentences. After them, <span class="fr">aller</span>, <span class="fr">faire</span>, <span class="fr">pouvoir</span>, <span class="fr">vouloir</span>, and <span class="fr">savoir</span> round out the essential list. Drill these aloud until <span class="fr">que je sois</span> and <span class="fr">que j'aie</span> come without thinking.</p>
+
+      <p>What triggers the subjunctive? A short list to memorise. <em>Necessity:</em> <span class="fr">il faut que</span>, <span class="fr">il est nécessaire que</span>. <em>Emotion:</em> <span class="fr">je suis content que</span>, <span class="fr">j'ai peur que</span>, <span class="fr">je regrette que</span>. <em>Doubt or denial:</em> <span class="fr">je doute que</span>, <span class="fr">il est possible que</span>, <span class="fr">je ne pense pas que</span>. <em>Desire and preference:</em> <span class="fr">je veux que</span>, <span class="fr">je préfère que</span>, <span class="fr">j'aimerais que</span>. <em>Certain conjunctions:</em> <span class="fr">bien que</span> (although), <span class="fr">avant que</span> (before), <span class="fr">pour que</span> (so that), <span class="fr">à moins que</span> (unless). When you see one of these phrases, expect the subjunctive in what follows.</p>
+    `,
+    examples: [
+      { fr: 'Il faut que tu viennes.', en: 'You have to come.', note: 'il faut que → necessity trigger.' },
+      { fr: 'Je veux que tu sois là.', en: 'I want you to be there.', note: 'vouloir que + subjunctive of être.' },
+      { fr: "Je suis content qu'il fasse beau.", en: "I'm glad the weather is nice.", note: 'Emotion trigger; irregular fasse.' },
+      { fr: "Bien qu'il soit fatigué, il travaille.", en: 'Although he is tired, he works.', note: 'bien que = conjunction trigger.' },
+      { fr: "Je doute qu'elle sache la réponse.", en: 'I doubt she knows the answer.', note: 'doubt trigger; irregular sache.' },
+      { fr: 'Il faut que vous parliez plus lentement.', en: 'You need to speak more slowly.', note: 'il faut que — practical, everyday use.' },
+      { fr: "Je regrette qu'il ne puisse pas venir.", en: "I'm sorry he can't come.", note: 'Emotion trigger; irregular puisse.' },
+      { fr: "Appelle-moi avant qu'il parte.", en: 'Call me before he leaves.', note: 'avant que = conjunction trigger.' },
+      { fr: "Il est possible qu'elle ait raison.", en: "It's possible she's right.", note: 'Possibility + irregular subjunctive of avoir.' },
+      { fr: 'Je préfère que nous prenions le train.', en: 'I prefer that we take the train.', note: 'Preference trigger.' }
+    ],
+    exercises: [
+      {
+        q: 'What is the subjunctive?',
+        options: ['A tense', 'A mood', 'A verb form only used in writing', 'A type of adjective'],
+        correct: 1,
+        explanation: 'The subjunctive is a mood, not a tense. It expresses subjectivity — doubt, emotion, necessity.'
+      },
+      {
+        q: 'What word usually introduces a subjunctive clause?',
+        options: ['si', 'quand', 'que', 'parce que'],
+        correct: 2,
+        explanation: 'The subjunctive almost always appears after que, following a trigger expression in the main clause.'
+      },
+      {
+        q: 'Form the subjunctive of parler for je (start from ils parlent).',
+        options: ['que je parle', 'que je parles', 'que je parlé', 'que je parlais'],
+        correct: 0,
+        explanation: 'Ils parlent → parl- + e = que je parle. Same as the indicative for -er verbs, but the trigger makes it subjunctive.'
+      },
+      {
+        q: 'Which triggers the subjunctive?',
+        options: ['Je pense que', 'Il faut que', 'Je sais que', 'Il dit que'],
+        correct: 1,
+        explanation: 'Il faut que expresses necessity — always triggers the subjunctive. Penser que, savoir que, dire que use the indicative.'
+      },
+      {
+        q: 'What is the subjunctive of être for il?',
+        options: ['est', 'soit', 'serait', 'était'],
+        correct: 1,
+        explanation: 'Être is irregular in the subjunctive: que je sois, que tu sois, qu\'il soit.'
+      },
+      {
+        q: 'Complete: Je suis content ___ tu sois là.',
+        options: ['si', 'quand', 'que', 'parce que'],
+        correct: 2,
+        explanation: 'Emotion (content) + que triggers the subjunctive.'
+      },
+      {
+        q: 'Which sentence correctly uses the subjunctive?',
+        options: ['Il faut que tu viens', 'Il faut que tu viennes', 'Il faut tu viennes', 'Il faut que tu venais'],
+        correct: 1,
+        explanation: 'Il faut que triggers the subjunctive. Venir → ils viennent → vienn- + es = viennes.'
+      },
+      {
+        q: 'Which conjunction always triggers the subjunctive?',
+        options: ['parce que', 'quand', 'bien que', 'si'],
+        correct: 2,
+        explanation: 'Bien que (although) always triggers the subjunctive. Parce que, quand, and si use the indicative.'
+      }
+    ]
   }
 ];
 
@@ -758,6 +1198,11 @@ const VOCAB_DB = [
   { fr: 'mille', en: 'one thousand', ipa: '/mil/', cat: 'Numbers', examples: ['Mille mercis.', 'Mille euros.'] },
   { fr: 'premier', en: 'first', ipa: '/pʁə.mje/', cat: 'Numbers', examples: ['Le premier jour.', 'Le premier de la classe.'] },
   { fr: 'deuxième', en: 'second', ipa: '/dø.zjɛm/', cat: 'Numbers', examples: ['La deuxième fois.', 'Au deuxième étage.'] },
+  { fr: 'zéro', en: 'zero', ipa: '/ze.ʁo/', cat: 'Numbers', examples: ['Il fait zéro degré.', 'Le score est de zéro à un.'] },
+  { fr: 'onze', en: 'eleven', ipa: '/ɔ̃z/', cat: 'Numbers', examples: ['Il est onze heures.', 'Onze joueurs sur le terrain.'] },
+  { fr: 'douze', en: 'twelve', ipa: '/duz/', cat: 'Numbers', examples: ['Une douzaine d\'œufs, douze œufs.', 'À midi, douze heures.'] },
+  { fr: 'quarante', en: 'forty', ipa: '/ka.ʁɑ̃t/', cat: 'Numbers', examples: ['Il a quarante ans.', 'Quarante euros par jour.'] },
+  { fr: 'un million', en: 'one million', ipa: '/œ̃ mi.ljɔ̃/', cat: 'Numbers', examples: ['Un million d\'euros.', 'Plus d\'un million de personnes.'] },
 
   // DAYS & MONTHS
   { fr: 'lundi', en: 'Monday', ipa: '/lœ̃.di/', cat: 'Days & Months', examples: ['Lundi prochain.', 'On se voit lundi?'] },
@@ -801,6 +1246,14 @@ const VOCAB_DB = [
   { fr: 'le déjeuner', en: 'lunch', ipa: '/lə de.ʒœ.ne/', cat: 'Food & Drink', gender: 'm', examples: ['Le déjeuner est à midi.', 'On va déjeuner.'] },
   { fr: 'le dîner', en: 'dinner', ipa: '/lə di.ne/', cat: 'Food & Drink', gender: 'm', examples: ['Le dîner est prêt.', 'On dîne à huit heures.'] },
   { fr: "l'addition", en: 'the bill', ipa: '/la.di.sjɔ̃/', cat: 'Food & Drink', gender: 'f', examples: ['L\'addition, s\'il vous plaît.', 'On demande l\'addition.'] },
+  { fr: "l'eau minérale", en: 'mineral water', ipa: '/lo mi.ne.ʁal/', cat: 'Food & Drink', gender: 'f', examples: ['Une bouteille d\'eau minérale, s\'il vous plaît.', 'Je préfère l\'eau minérale gazeuse.'] },
+  { fr: 'le bœuf', en: 'beef', ipa: '/lə bœf/', cat: 'Food & Drink', gender: 'm', examples: ['Un steak de bœuf saignant.', 'Le bœuf bourguignon est un plat classique.'] },
+  { fr: 'la salade', en: 'salad', ipa: '/la sa.lad/', cat: 'Food & Drink', gender: 'f', examples: ['Une salade verte en entrée.', 'La salade niçoise est délicieuse.'] },
+  { fr: 'les pâtes', en: 'pasta', ipa: '/le pɑt/', cat: 'Food & Drink', gender: 'f', examples: ['Des pâtes à la sauce tomate.', 'Les enfants adorent les pâtes.'] },
+  { fr: 'le riz', en: 'rice', ipa: '/lə ʁi/', cat: 'Food & Drink', gender: 'm', examples: ['Du riz blanc avec le poulet.', 'Le riz est cuit à la perfection.'] },
+  { fr: 'la soupe', en: 'soup', ipa: '/la sup/', cat: 'Food & Drink', gender: 'f', examples: ['Une soupe à l\'oignon.', 'La soupe est bien chaude.'] },
+  { fr: 'le dessert', en: 'dessert', ipa: '/lə de.sɛʁ/', cat: 'Food & Drink', gender: 'm', examples: ['Qu\'est-ce qu\'il y a comme dessert?', 'Le dessert est compris dans le menu.'] },
+  { fr: 'le menu', en: 'set menu', ipa: '/lə mə.ny/', cat: 'Food & Drink', gender: 'm', examples: ['Je prends le menu à vingt euros.', 'Le menu du jour est intéressant.'] },
 
   // TRAVEL
   { fr: 'la gare', en: 'train station', ipa: '/la gaʁ/', cat: 'Travel', gender: 'f', examples: ['La gare du Nord.', 'On se retrouve à la gare.'] },
@@ -819,6 +1272,14 @@ const VOCAB_DB = [
   { fr: 'tout droit', en: 'straight ahead', ipa: '/tu dʁwa/', cat: 'Travel', examples: ['Allez tout droit.', 'Tout droit pendant cent mètres.'] },
   { fr: 'la rue', en: 'street', ipa: '/la ʁy/', cat: 'Travel', gender: 'f', examples: ['Dans la rue principale.', 'La rue est bondée.'] },
   { fr: "l'arrêt", en: 'stop', ipa: '/la.ʁɛ/', cat: 'Travel', gender: 'm', examples: ['Le prochain arrêt.', 'Un arrêt de bus.'] },
+  { fr: 'le taxi', en: 'taxi', ipa: '/lə tak.si/', cat: 'Travel', gender: 'm', examples: ['Je prends un taxi à la gare.', 'Le taxi attend devant l\'hôtel.'] },
+  { fr: 'la chambre', en: 'room', ipa: '/la ʃɑ̃bʁ/', cat: 'Travel', gender: 'f', examples: ['Une chambre double pour deux nuits.', 'La chambre est au troisième étage.'] },
+  { fr: "l'office de tourisme", en: 'tourist office', ipa: '/lɔ.fis də tu.ʁism/', cat: 'Travel', gender: 'm', examples: ['L\'office de tourisme est sur la place.', 'Allez à l\'office de tourisme pour une carte.'] },
+  { fr: 'la carte', en: 'map', ipa: '/la kaʁt/', cat: 'Travel', gender: 'f', examples: ['Vous avez une carte de la ville?', 'La carte est dans mon sac.'] },
+  { fr: "près d'ici", en: 'near here', ipa: '/pʁɛ di.si/', cat: 'Travel', examples: ['Il y a un café près d\'ici?', 'Le musée est près d\'ici.'] },
+  { fr: "loin d'ici", en: 'far from here', ipa: '/lwɛ̃ di.si/', cat: 'Travel', examples: ['Ce n\'est pas loin d\'ici.', 'L\'aéroport est loin d\'ici?'] },
+  { fr: 'combien ça coûte', en: 'how much is it', ipa: '/kɔ̃.bjɛ̃ sa kut/', cat: 'Travel', examples: ['Combien ça coûte, ce billet?', 'Pardon, combien ça coûte?'] },
+  { fr: 'où est', en: 'where is', ipa: '/u ɛ/', cat: 'Travel', examples: ['Où est la gare, s\'il vous plaît?', 'Où est l\'arrêt de bus?'] },
 
   // WORK
   { fr: 'le travail', en: 'work', ipa: '/lə tʁa.vaj/', cat: 'Work', gender: 'm', examples: ['Le travail est intéressant.', 'Beaucoup de travail aujourd\'hui.'] },
@@ -883,7 +1344,24 @@ const VOCAB_DB = [
   { fr: 'donner', en: 'to give', ipa: '/dɔ.ne/', cat: 'Verbs', examples: ['Je te donne mon numéro.', 'Donne-moi la main.'] },
   { fr: 'penser', en: 'to think', ipa: '/pɑ̃.se/', cat: 'Verbs', examples: ['Je pense que oui.', 'Qu\'est-ce que tu en penses?'] },
   { fr: 'comprendre', en: 'to understand', ipa: '/kɔ̃.pʁɑ̃dʁ/', cat: 'Verbs', examples: ['Je comprends.', 'Tu comprends?'] },
-  { fr: 'écouter', en: 'to listen', ipa: '/e.ku.te/', cat: 'Verbs', examples: ['J\'écoute de la musique.', 'Écoute-moi.'] }
+  { fr: 'écouter', en: 'to listen', ipa: '/e.ku.te/', cat: 'Verbs', examples: ['J\'écoute de la musique.', 'Écoute-moi.'] },
+
+  // BODY & HEALTH
+  { fr: 'la tête', en: 'head', ipa: '/la tɛt/', cat: 'Body & Health', gender: 'f', examples: ['J\'ai mal à la tête.', 'Tourne la tête à gauche.'] },
+  { fr: 'les yeux', en: 'eyes', ipa: '/le.z‿jø/', cat: 'Body & Health', gender: 'm', examples: ['Elle a les yeux bleus.', 'Ferme les yeux un instant.'] },
+  { fr: 'le nez', en: 'nose', ipa: '/lə ne/', cat: 'Body & Health', gender: 'm', examples: ['Il a le nez qui coule.', 'Le nez rouge du clown.'] },
+  { fr: 'la bouche', en: 'mouth', ipa: '/la buʃ/', cat: 'Body & Health', gender: 'f', examples: ['Ouvrez la bouche, s\'il vous plaît.', 'Elle a un sourire au coin de la bouche.'] },
+  { fr: 'les oreilles', en: 'ears', ipa: '/le.z‿ɔ.ʁɛj/', cat: 'Body & Health', gender: 'f', examples: ['J\'ai mal aux oreilles.', 'Ses oreilles sont rouges de froid.'] },
+  { fr: 'les mains', en: 'hands', ipa: '/le mɛ̃/', cat: 'Body & Health', gender: 'f', examples: ['Lave-toi les mains avant de manger.', 'Il a les mains froides.'] },
+  { fr: 'les pieds', en: 'feet', ipa: '/le pje/', cat: 'Body & Health', gender: 'm', examples: ['J\'ai mal aux pieds après la marche.', 'Les enfants courent pieds nus.'] },
+  { fr: 'le dos', en: 'back', ipa: '/lə do/', cat: 'Body & Health', gender: 'm', examples: ['J\'ai mal au dos depuis hier.', 'Couche-toi sur le dos.'] },
+  { fr: 'le ventre', en: 'stomach / belly', ipa: '/lə vɑ̃tʁ/', cat: 'Body & Health', gender: 'm', examples: ['J\'ai mal au ventre.', 'Le ventre vide, on ne pense pas bien.'] },
+  { fr: "j'ai mal à", en: 'I have a pain in', ipa: '/ʒe mal a/', cat: 'Body & Health', examples: ['J\'ai mal à la tête.', 'J\'ai mal au dos depuis ce matin.'] },
+  { fr: 'je suis malade', en: 'I am sick', ipa: '/ʒə sɥi ma.lad/', cat: 'Body & Health', examples: ['Je suis malade aujourd\'hui, je reste au lit.', 'Je suis malade, je ne peux pas venir.'] },
+  { fr: 'le médecin', en: 'doctor', ipa: '/lə me.tsɛ̃/', cat: 'Body & Health', gender: 'm', examples: ['Je vais chez le médecin demain.', 'Le médecin m\'a donné une ordonnance.'] },
+  { fr: 'la pharmacie', en: 'pharmacy', ipa: '/la faʁ.ma.si/', cat: 'Body & Health', gender: 'f', examples: ['La pharmacie est ouverte jusqu\'à dix-neuf heures.', 'Il y a une pharmacie au coin de la rue.'] },
+  { fr: 'un médicament', en: 'a medicine', ipa: '/œ̃ me.di.ka.mɑ̃/', cat: 'Body & Health', gender: 'm', examples: ['Le médecin a prescrit un médicament.', 'Ce médicament se prend trois fois par jour.'] },
+  { fr: 'la douleur', en: 'pain', ipa: '/la du.lœʁ/', cat: 'Body & Health', gender: 'f', examples: ['La douleur est insupportable.', 'Cette douleur dure depuis une semaine.'] }
 ];
 
 
@@ -1066,9 +1544,88 @@ const EPISODES = [
 
 
 // ============================================================
+// PODCASTS
+// ============================================================
+
+const PODCASTS = [
+  {
+    name: 'InnerFrench',
+    level: 'B1–B2',
+    host: 'Hugo Cotton',
+    description: 'Natural, conversational French at a slightly reduced pace. No English — full immersion from the start. One of the best resources for moving from A2 to B2.',
+    url: 'https://innerfrench.com',
+    site: 'innerfrench.com',
+    episodes: [
+      { title: '#001 — Le bonheur', url: 'https://innerfrench.com/podcast/' },
+      { title: "#007 — L'argent", url: 'https://innerfrench.com/podcast/' },
+      { title: '#013 — Les réseaux sociaux', url: 'https://innerfrench.com/podcast/' }
+    ]
+  },
+  {
+    name: 'Coffee Break French',
+    level: 'A1–B2',
+    host: 'Mark — Radio Lingua',
+    description: 'Structured lesson-style podcast. Each episode teaches specific grammar or vocabulary in context. Good for beginners who want guidance and clear progression.',
+    url: 'https://coffeebreaklanguages.com/coffeebreakfrench/',
+    site: 'coffeebreaklanguages.com',
+    episodes: [
+      { title: 'Season 1, Episodes 1–5 — for absolute beginners', url: 'https://coffeebreaklanguages.com/coffeebreakfrench/' }
+    ]
+  },
+  {
+    name: 'Français Authentique',
+    level: 'A2–B2',
+    host: 'Johan Tekfak',
+    description: 'Immersion-focused. Johan speaks clearly and naturally, often explaining French culture and mindset. Good for building listening instinct over time.',
+    url: 'https://www.francaisauthentique.com',
+    site: 'francaisauthentique.com',
+    episodes: [
+      { title: 'Pourquoi apprendre le français', url: 'https://www.francaisauthentique.com/podcast/' },
+      { title: 'Les erreurs des apprenants', url: 'https://www.francaisauthentique.com/podcast/' }
+    ]
+  },
+  {
+    name: 'RFI — Le français facile',
+    level: 'A2–B1',
+    host: 'RFI (Radio France Internationale)',
+    description: 'Real news presented in simplified, clear French. Excellent for building vocabulary around current events. Short episodes — 5 to 8 minutes — perfect for daily listening.',
+    url: 'https://www.rfi.fr/fr/podcasts/journal-en-français-facile/',
+    site: 'rfi.fr',
+    episodes: [
+      { title: 'Daily episodes — any recent one works', url: 'https://www.rfi.fr/fr/podcasts/journal-en-français-facile/' }
+    ]
+  },
+  {
+    name: 'Duolingo French Podcast',
+    level: 'B1',
+    host: 'Duolingo — English/French mix',
+    description: 'Story-driven episodes about real people. French narration with English context. Good for listening comprehension without the pressure of full immersion.',
+    url: 'https://podcast.duolingo.com/french',
+    site: 'podcast.duolingo.com',
+    episodes: [
+      { title: 'Episode 1 — Une nouvelle vie', url: 'https://podcast.duolingo.com/french' },
+      { title: 'Episode 3', url: 'https://podcast.duolingo.com/french' }
+    ]
+  },
+  {
+    name: 'News in Slow French',
+    level: 'A2–B2',
+    host: 'Anaïs and Hugues',
+    description: 'Weekly current events discussed at a deliberately slow, clear pace. Grammar tips included. Free episodes available; premium for full access.',
+    url: 'https://www.newsinslowfrench.com',
+    site: 'newsinslowfrench.com',
+    episodes: [
+      { title: 'Any free episode from the beginner series', url: 'https://www.newsinslowfrench.com' }
+    ]
+  }
+];
+
+
+// ============================================================
 // EXPORTS (attached to window for plain script use)
 // ============================================================
 
 window.LESSONS = LESSONS;
 window.VOCAB_DB = VOCAB_DB;
 window.EPISODES = EPISODES;
+window.PODCASTS = PODCASTS;
