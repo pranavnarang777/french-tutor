@@ -42,24 +42,16 @@ if (supabaseConfigured && window.supabase && window.supabase.createClient) {
 let session = null;
 let completedLessons = new Set();
 let currentLessonId = null;
-let currentPhase = 0;          // 0=theory, 1=examples, 2=exercises
+let currentPhase = 0;          // index into lessonPhases(lesson)
 let exerciseAnswers = {};      // { qIndex: { picked, correct } }
 let currentCategory = 'Essentials';
-let cachedVoices = [];
 let activeEpisodeLineEl = null;
 let episodePlayState = { stopped: true };
+let activeVideo = null;
 
 // ============================================================
-// SPEECH (Web Speech API)
+// SPEECH (Web Speech API — voice choice lives in video.js)
 // ============================================================
-
-function loadVoices() {
-  cachedVoices = window.speechSynthesis.getVoices();
-}
-if (typeof speechSynthesis !== 'undefined') {
-  loadVoices();
-  speechSynthesis.onvoiceschanged = loadVoices;
-}
 
 function speak(text, rate = 0.85, onEnd) {
   if (!window.speechSynthesis) return;
@@ -67,14 +59,19 @@ function speak(text, rate = 0.85, onEnd) {
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = 'fr-FR';
   utter.rate = rate;
-  const voices = cachedVoices.length ? cachedVoices : window.speechSynthesis.getVoices();
-  const frVoice = voices.find(v => v.lang && v.lang.toLowerCase().startsWith('fr'));
+  const frVoice = Voices.pick('fr');
   if (frVoice) utter.voice = frVoice;
   if (onEnd) utter.onend = onEnd;
   window.speechSynthesis.speak(utter);
 }
 
+function stopVideo() {
+  if (activeVideo) activeVideo.destroy();
+  activeVideo = null;
+}
+
 function stopSpeech() {
+  stopVideo();
   if (window.speechSynthesis) window.speechSynthesis.cancel();
   episodePlayState.stopped = true;
   if (activeEpisodeLineEl) {
@@ -241,22 +238,40 @@ function openLesson(lessonId) {
   renderPhase();
 }
 
+const PHASE_LABELS = { watch: 'Watch', theory: 'Theory', examples: 'Examples', exercises: 'Exercises' };
+
+function lessonPhases(lesson) {
+  const phases = ['theory', 'examples', 'exercises'];
+  return window.VIDEOS && VIDEOS[lesson.id] ? ['watch', ...phases] : phases;
+}
+
 function renderPhase() {
   const lesson = LESSONS.find(l => l.id === currentLessonId);
   if (!lesson) return;
   const content = document.getElementById('phaseContent');
+  const phases = lessonPhases(lesson);
+  const phase = phases[currentPhase];
 
-  // phase pip state
-  document.querySelectorAll('.phase-pip').forEach((pip, i) => {
-    pip.classList.toggle('active', i === currentPhase);
-    pip.classList.toggle('done', i < currentPhase);
-  });
+  document.getElementById('phaseBar').innerHTML = phases.map((p, i) => `
+    <div class="phase-pip ${i === currentPhase ? 'active' : ''} ${i < currentPhase ? 'done' : ''}" data-phase="${i}">
+      <span class="phase-pip-num">${i + 1}</span><span class="phase-pip-label">${PHASE_LABELS[p]}</span>
+    </div>
+  `).join('');
 
-  if (currentPhase === 0) {
+  stopVideo();
+  if (phase === 'watch') {
+    content.innerHTML = `
+      <div id="videoMount"></div>
+      <p class="video-note">Prefer to read? You can skip straight to the theory — the video covers the same ground.</p>
+    `;
+    activeVideo = new LessonVideo(document.getElementById('videoMount'), VIDEOS[lesson.id], {
+      onComplete: () => goToPhase(currentPhase + 1)
+    });
+  } else if (phase === 'theory') {
     content.innerHTML = `<div class="theory">${lesson.theory}</div>`;
-  } else if (currentPhase === 1) {
+  } else if (phase === 'examples') {
     content.innerHTML = renderExamples(lesson);
-  } else if (currentPhase === 2) {
+  } else if (phase === 'exercises') {
     content.innerHTML = renderExercises(lesson);
     attachExerciseHandlers(lesson);
   }
@@ -264,11 +279,18 @@ function renderPhase() {
   // footer buttons
   const prev = document.getElementById('prevPhaseBtn');
   const next = document.getElementById('nextPhaseBtn');
+  const nextPhase = phases[currentPhase + 1];
   prev.style.visibility = currentPhase === 0 ? 'hidden' : 'visible';
-  if (currentPhase === 0) next.textContent = 'Continue to examples';
-  else if (currentPhase === 1) next.textContent = 'Continue to exercises';
-  else next.style.display = 'none';
-  if (currentPhase < 2) next.style.display = '';
+  next.style.display = nextPhase ? '' : 'none';
+  if (nextPhase) next.textContent = `Continue to ${PHASE_LABELS[nextPhase].toLowerCase()}`;
+}
+
+function goToPhase(i) {
+  const lesson = LESSONS.find(l => l.id === currentLessonId);
+  if (!lesson || i < 0 || i >= lessonPhases(lesson).length) return;
+  currentPhase = i;
+  renderPhase();
+  window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 function renderExamples(lesson) {
@@ -394,20 +416,8 @@ function checkExercisesComplete(lesson) {
   }
 }
 
-document.getElementById('nextPhaseBtn').addEventListener('click', () => {
-  if (currentPhase < 2) {
-    currentPhase++;
-    renderPhase();
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  }
-});
-document.getElementById('prevPhaseBtn').addEventListener('click', () => {
-  if (currentPhase > 0) {
-    currentPhase--;
-    renderPhase();
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  }
-});
+document.getElementById('nextPhaseBtn').addEventListener('click', () => goToPhase(currentPhase + 1));
+document.getElementById('prevPhaseBtn').addEventListener('click', () => goToPhase(currentPhase - 1));
 
 // ============================================================
 // VOCABULARY PAGE
