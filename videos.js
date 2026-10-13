@@ -20,19 +20,21 @@
 //   formula                      { parts: ['a', '+', { text, sub }] }
 //   table                        { rows: [[left, right, note?]] }
 //   arrow                        { label, from, to }
+//   grid                         { head?, rows: [[…]], fr: [French column indexes], widths? }
 //   group                        { label, items: [] }
 //   pair                         { items: [{ fr, note }] }
 //   contrast                     { wrong, right, note }
 //   quiz                         { n, q, a }
 // Any element takes `id`; in a split scene, `col: 1 | 2`.
-// Board text supports [[French]] and {{highlight}}.
+// Board text supports [[French]], {{highlight}} and ((silent letters)).
+// In narration, [[2:…]] is French read by a second voice (dialogues).
 // ============================================================
 
 const VIDEOS = {
 
   'lesson-6': {
     title: 'Le passé composé avec [[avoir]]',
-    kicker: 'A2 · Unit 7 · Lesson 23',
+    kicker: 'A2 · Passé composé',
     scenes: [
       {
         chapter: 'Bienvenue',

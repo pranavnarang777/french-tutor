@@ -53,15 +53,20 @@ let activeVideo = null;
 // SPEECH (Web Speech API — voice choice lives in video.js)
 // ============================================================
 
-function speak(text, rate = 0.85, onEnd) {
+let currentUtterance = null;   // kept so Chrome doesn't garbage-collect it mid-speech
+
+// speaker: 0 = main French voice, 1 = second voice (the other person in a dialogue)…
+function speak(text, rate = 0.85, onEnd, speaker = 0) {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = 'fr-FR';
   utter.rate = rate;
-  const frVoice = Voices.pick('fr');
-  if (frVoice) utter.voice = frVoice;
+  const { voice, pitch } = Voices.forSpeaker(speaker);
+  if (voice) utter.voice = voice;
+  utter.pitch = pitch;
   if (onEnd) utter.onend = onEnd;
+  currentUtterance = utter;
   window.speechSynthesis.speak(utter);
 }
 
@@ -80,16 +85,16 @@ function stopSpeech() {
   }
 }
 
-// Wire all .play-btn elements (delegated)
+// Wire every play button (delegated). Optional data-rate and data-voice.
 document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.play-btn');
+  const btn = e.target.closest('.play-btn, .alpha-card, .listen-btn');
   if (!btn) return;
   e.preventDefault();
   const text = btn.dataset.text;
   if (!text) return;
-  document.querySelectorAll('.play-btn.playing').forEach(b => b.classList.remove('playing'));
+  document.querySelectorAll('.playing').forEach(b => b.classList.remove('playing'));
   btn.classList.add('playing');
-  speak(text, 0.85, () => btn.classList.remove('playing'));
+  speak(text, parseFloat(btn.dataset.rate) || 0.85, () => btn.classList.remove('playing'), +(btn.dataset.voice || 0));
 });
 
 // ============================================================
@@ -148,54 +153,121 @@ document.getElementById('menuToggle').addEventListener('click', () => {
 });
 
 // ============================================================
+// COURSE — the map in course.js, joined with the written lessons
+// ============================================================
+//
+// Course lessons are numbered 1…N across the whole map. Lessons in
+// LESSONS that aren't on the map are the earlier drafts ("archive"),
+// kept readable until they've been rebuilt into the course.
+
+const COURSE_LESSONS = COURSE.flatMap(level =>
+  level.units.flatMap(unit =>
+    unit.lessons.map(l => ({ ...l, level: level.level, unit }))));
+const COURSE_IDS = new Set(COURSE_LESSONS.map(l => l.id));
+
+function lessonById(id) { return LESSONS.find(l => l.id === id); }
+function courseEntry(id) { return COURSE_LESSONS.find(l => l.id === id); }
+function builtCourseLessons() { return COURSE_LESSONS.filter(l => lessonById(l.id)); }
+function archiveLessons() { return LESSONS.filter(l => !COURSE_IDS.has(l.id)); }
+
+// The ids a lesson's "Next lesson" button walks through.
+function lessonSequence(id) {
+  return COURSE_IDS.has(id) ? builtCourseLessons().map(l => l.id) : archiveLessons().map(l => l.id);
+}
+
+function goToLesson(id) {
+  showPage('lesson', { lessonId: id });
+  location.hash = id;
+}
+
+// ============================================================
 // SIDEBAR — lesson list
 // ============================================================
 
+function navItem(id, label) {
+  return `<li data-lesson-id="${id}" class="${completedLessons.has(id) ? 'completed' : ''}">
+    <span class="nav-check"></span><span>${escapeHtml(label)}</span></li>`;
+}
+
 function renderSidebarLessons() {
   const ul = document.getElementById('lessonNav');
-  ul.innerHTML = '';
-  LESSONS.forEach((l, i) => {
-    const li = document.createElement('li');
-    li.dataset.lessonId = l.id;
-    li.classList.toggle('completed', completedLessons.has(l.id));
-    li.innerHTML = `
-      <span class="nav-check"></span>
-      <span>${i + 1}. ${l.title.replace(/^The /, '')}</span>
-    `;
-    li.addEventListener('click', () => {
-      showPage('lesson', { lessonId: l.id });
-      location.hash = l.id;
-    });
-    ul.appendChild(li);
+  const built = builtCourseLessons();
+  const units = [...new Set(built.map(l => l.unit))];
+  const archive = archiveLessons();
+
+  ul.innerHTML = units.map(unit => `
+    <li class="nav-unit">Unit ${unit.n} · ${escapeHtml(unit.name)}</li>
+    ${built.filter(l => l.unit === unit)
+      .map(l => navItem(l.id, `${COURSE_LESSONS.indexOf(l) + 1}. ${l.title}`)).join('')}
+  `).join('') + (archive.length ? `
+    <li class="nav-archive">
+      <details>
+        <summary>Earlier lessons (${archive.length})</summary>
+        <ul class="nav-list">${archive.map((l, i) => navItem(l.id, `${i + 1}. ${l.title.replace(/^The /, '')}`)).join('')}</ul>
+      </details>
+    </li>` : '');
+
+  ul.querySelectorAll('li[data-lesson-id]').forEach(li => {
+    li.addEventListener('click', () => goToLesson(li.dataset.lessonId));
   });
 }
 
 // ============================================================
-// HOME — curriculum list and progress
+// HOME — the course map and progress
 // ============================================================
+
+function curriculumItem(num, title, sub, id) {
+  const built = id && lessonById(id);
+  const done = id && completedLessons.has(id);
+  const status = !built ? 'Coming soon' : done ? '✓ Complete' : 'Not started';
+  return `
+    <div class="curriculum-item ${built ? '' : 'planned'}" ${built ? `data-lesson-id="${id}"` : ''}>
+      <div class="curriculum-num">${String(num).padStart(2, '0')}</div>
+      <div class="curriculum-body">
+        <div class="curriculum-title">${escapeHtml(title)}</div>
+        <div class="curriculum-sub">${escapeHtml(sub)}</div>
+      </div>
+      <div class="curriculum-status ${done ? '' : 'incomplete'}">${status}</div>
+    </div>`;
+}
 
 function renderCurriculum() {
   const wrap = document.getElementById('curriculumList');
-  wrap.innerHTML = '';
-  LESSONS.forEach((l, i) => {
-    const item = document.createElement('div');
-    item.className = 'curriculum-item';
-    const done = completedLessons.has(l.id);
-    item.innerHTML = `
-      <div class="curriculum-num">${String(i + 1).padStart(2, '0')}</div>
-      <div class="curriculum-body">
-        <div class="curriculum-title">${l.title}</div>
-        <div class="curriculum-sub">${l.subtitle}</div>
-      </div>
-      <div class="curriculum-status ${done ? '' : 'incomplete'}">
-        ${done ? '✓ Complete' : 'Not started'}
-      </div>
-    `;
-    item.addEventListener('click', () => {
-      showPage('lesson', { lessonId: l.id });
-      location.hash = l.id;
-    });
-    wrap.appendChild(item);
+  const archive = archiveLessons();
+
+  wrap.innerHTML = COURSE.map(level => {
+    const ids = level.units.flatMap(u => u.lessons.map(l => l.id));
+    const done = ids.filter(id => completedLessons.has(id)).length;
+    return `
+      <div class="level-block">
+        <div class="level-head">
+          <span class="level-badge">${level.level}</span>
+          <span class="level-name">${escapeHtml(level.name)} <em>· ${escapeHtml(level.en)}</em></span>
+          <span class="level-count">${done} / ${ids.length}</span>
+        </div>
+        ${level.units.map(unit => {
+          const anyBuilt = unit.lessons.some(l => lessonById(l.id));
+          return `
+            <details class="unit-block" ${anyBuilt ? 'open' : ''}>
+              <summary class="unit-head">
+                <span>Unit ${unit.n} · ${escapeHtml(unit.name)}</span>
+                <span class="unit-en">${escapeHtml(unit.en)}</span>
+              </summary>
+              ${unit.lessons.map(l => curriculumItem(COURSE_LESSONS.findIndex(c => c.id === l.id) + 1, l.title, l.sub, l.id)).join('')}
+            </details>`;
+        }).join('')}
+      </div>`;
+  }).join('') + (archive.length ? `
+    <details class="unit-block archive-block">
+      <summary class="unit-head">
+        <span>Earlier lessons</span>
+        <span class="unit-en">The first draft — being rebuilt into the course above</span>
+      </summary>
+      ${archive.map((l, i) => curriculumItem(i + 1, l.title, l.subtitle, l.id)).join('')}
+    </details>` : '');
+
+  wrap.querySelectorAll('.curriculum-item[data-lesson-id]').forEach(item => {
+    item.addEventListener('click', () => goToLesson(item.dataset.lessonId));
   });
 }
 
@@ -204,8 +276,8 @@ function renderCurriculum() {
 // ============================================================
 
 function updateProgressUI() {
-  const total = LESSONS.length;
-  const done = completedLessons.size;
+  const total = COURSE_LESSONS.length;
+  const done = COURSE_LESSONS.filter(l => completedLessons.has(l.id)).length;
   const pct = total ? (done / total) * 100 : 0;
 
   document.getElementById('sidebarProgressFill').style.width = pct + '%';
@@ -225,28 +297,48 @@ function updateProgressUI() {
 // ============================================================
 
 function openLesson(lessonId) {
-  const lesson = LESSONS.find(l => l.id === lessonId);
+  const lesson = lessonById(lessonId);
   if (!lesson) return;
   currentLessonId = lessonId;
   currentPhase = 0;
   exerciseAnswers = {};
 
-  const idx = LESSONS.findIndex(l => l.id === lessonId);
-  document.getElementById('lessonEyebrow').textContent = `Lesson ${idx + 1} of ${LESSONS.length}`;
+  const entry = courseEntry(lessonId);
+  const archive = archiveLessons();
+  document.getElementById('lessonEyebrow').textContent = entry
+    ? `${entry.level} · Unit ${entry.unit.n} · Lesson ${COURSE_LESSONS.indexOf(entry) + 1} of ${COURSE_LESSONS.length}`
+    : `Earlier lesson ${archive.indexOf(lesson) + 1} of ${archive.length}`;
   document.getElementById('lessonTitle').textContent = lesson.title;
   document.getElementById('lessonSubtitle').textContent = lesson.subtitle;
+  const goal = document.getElementById('lessonGoal');
+  goal.hidden = !lesson.goal;
+  goal.innerHTML = lesson.goal ? `<strong>By the end:</strong> ${escapeHtml(lesson.goal)}` : '';
   renderPhase();
 }
 
-const PHASE_LABELS = { watch: 'Watch', theory: 'Theory', examples: 'Examples', exercises: 'Exercises' };
+const PHASE_LABELS = {
+  watch: 'Watch', notes: 'Notes', theory: 'Theory', words: 'Words',
+  dialogue: 'Dialogue', examples: 'Examples', practice: 'Practice'
+};
 
+function lessonVideo(lesson) {
+  return lesson.video || (window.VIDEOS && VIDEOS[lesson.id]) || null;
+}
+
+// A lesson's steps in teaching order, built from whichever parts it has.
 function lessonPhases(lesson) {
-  const phases = ['theory', 'examples', 'exercises'];
-  return window.VIDEOS && VIDEOS[lesson.id] ? ['watch', ...phases] : phases;
+  return [
+    lessonVideo(lesson) && 'watch',
+    lesson.notes ? 'notes' : lesson.theory && 'theory',
+    lesson.vocab && 'words',
+    lesson.dialogue && 'dialogue',
+    lesson.examples && 'examples',
+    lesson.exercises && 'practice'
+  ].filter(Boolean);
 }
 
 function renderPhase() {
-  const lesson = LESSONS.find(l => l.id === currentLessonId);
+  const lesson = lessonById(currentLessonId);
   if (!lesson) return;
   const content = document.getElementById('phaseContent');
   const phases = lessonPhases(lesson);
@@ -258,22 +350,28 @@ function renderPhase() {
     </div>
   `).join('');
 
-  stopVideo();
+  stopSpeech();
+  const nextLabel = phases[currentPhase + 1] && PHASE_LABELS[phases[currentPhase + 1]].toLowerCase();
   if (phase === 'watch') {
     content.innerHTML = `
       <div id="videoMount"></div>
-      <p class="video-note">Prefer to read? You can skip straight to the theory — the video covers the same ground.</p>
+      <p class="video-note">Prefer to read? You can skip to the ${nextLabel} — they cover the same ground.</p>
     `;
-    activeVideo = new LessonVideo(document.getElementById('videoMount'), VIDEOS[lesson.id], {
-      onComplete: () => goToPhase(currentPhase + 1)
+    activeVideo = new LessonVideo(document.getElementById('videoMount'), lessonVideo(lesson), {
+      onComplete: () => goToPhase(currentPhase + 1),
+      nextLabel: `Continue to ${nextLabel}`
     });
-  } else if (phase === 'theory') {
-    content.innerHTML = `<div class="theory">${lesson.theory}</div>`;
+  } else if (phase === 'notes' || phase === 'theory') {
+    content.innerHTML = `<div class="theory">${lesson.notes || lesson.theory}</div>`;
+  } else if (phase === 'words') {
+    renderWords(lesson, content);
+  } else if (phase === 'dialogue') {
+    renderDialogue(lesson.dialogue, content);
   } else if (phase === 'examples') {
     content.innerHTML = renderExamples(lesson);
-  } else if (phase === 'exercises') {
-    content.innerHTML = renderExercises(lesson);
-    attachExerciseHandlers(lesson);
+  } else if (phase === 'practice') {
+    exerciseAnswers = {};
+    renderExercises(lesson, content);
   }
 
   // footer buttons
@@ -286,7 +384,7 @@ function renderPhase() {
 }
 
 function goToPhase(i) {
-  const lesson = LESSONS.find(l => l.id === currentLessonId);
+  const lesson = lessonById(currentLessonId);
   if (!lesson || i < 0 || i >= lessonPhases(lesson).length) return;
   currentPhase = i;
   renderPhase();
@@ -317,50 +415,256 @@ function renderExamples(lesson) {
   `;
 }
 
-function renderExercises(lesson) {
-  const items = lesson.exercises.map((ex, i) => `
-    <div class="exercise" data-q="${i}">
-      <div class="exercise-q">${i + 1}. ${escapeHtml(ex.q)}</div>
-      <div class="exercise-options">
-        ${ex.options.map((opt, oi) => `
-          <button class="exercise-option" data-q="${i}" data-opt="${oi}">${escapeHtml(opt)}</button>
-        `).join('')}
-      </div>
-      <div class="exercise-explanation" hidden></div>
-    </div>
-  `).join('');
-  return `
-    <p>Choose the correct answer. Each question gives you feedback immediately.</p>
-    ${items}
-    <div id="exerciseSummary"></div>
-  `;
+// ------------------------------------------------------------
+// WORDS — the lesson's vocabulary
+// ------------------------------------------------------------
+
+// "anglais / anglaise" → "anglais, anglaise" so the voice doesn't read the slash.
+function speakable(s) {
+  return s.replace(/\s*\/\s*/g, ', ').replace(/[()]/g, '');
 }
 
-function attachExerciseHandlers(lesson) {
-  document.querySelectorAll('.exercise-option').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const qIdx = parseInt(btn.dataset.q, 10);
-      const optIdx = parseInt(btn.dataset.opt, 10);
-      if (exerciseAnswers[qIdx]) return; // already answered
+function renderWords(lesson, content) {
+  const cards = lesson.vocab.map(v => `
+    <div class="vocab-card">
+      <div class="vc-top">
+        ${v.g ? `<span class="vc-gender-dot ${v.g}"></span>` : ''}
+        <span class="vc-fr">${escapeHtml(v.fr)}</span>
+        <button class="play-btn" data-text="${escapeAttr(speakable(v.fr))}">▶</button>
+      </div>
+      <div class="vc-en">${escapeHtml(v.en)}</div>
+      ${v.note ? `<div class="vc-ipa">${escapeHtml(v.note)}</div>` : ''}
+    </div>`).join('');
+  content.innerHTML = `
+    <p>The words of this lesson. Say each one out loud after you hear it. Nouns show their gender:
+      <span class="gender-key m"></span> masculine, <span class="gender-key f"></span> feminine.</p>
+    <div class="episode-controls">
+      <button class="btn btn-gold" data-seq="play">▶ Listen to all</button>
+      <button class="btn btn-ghost" data-seq="stop">Stop</button>
+    </div>
+    <div class="cat-grid lesson-words">${cards}</div>`;
 
-      const ex = lesson.exercises[qIdx];
-      const isCorrect = optIdx === ex.correct;
-      exerciseAnswers[qIdx] = { picked: optIdx, correct: isCorrect };
+  const cardEls = content.querySelectorAll('.vocab-card');
+  content.querySelector('[data-seq="play"]').addEventListener('click', () =>
+    playLines(lesson.vocab.map((v, i) => ({ text: speakable(v.fr), el: cardEls[i] })), 0.8, 900));
+  content.querySelector('[data-seq="stop"]').addEventListener('click', stopSpeech);
+}
 
-      const optionEls = document.querySelectorAll(`.exercise-option[data-q="${qIdx}"]`);
-      optionEls.forEach((el, i) => {
-        el.classList.add('disabled');
-        if (i === ex.correct) el.classList.add('correct');
-        if (i === optIdx && !isCorrect) el.classList.add('wrong');
-      });
+// ------------------------------------------------------------
+// DIALOGUE — the lesson's language in a real conversation
+// ------------------------------------------------------------
 
-      const exp = document.querySelector(`.exercise[data-q="${qIdx}"] .exercise-explanation`);
-      exp.textContent = ex.explanation;
-      exp.hidden = false;
+function renderDialogue(d, content) {
+  const cast = d.cast || {};
+  const voiceOf = who => cast[who] || 0;
+  content.innerHTML = `
+    <div class="episode lesson-dialogue">
+      <h3 class="episode-title">${escapeHtml(d.title)}</h3>
+      <div class="episode-desc">${escapeHtml(d.setting)}</div>
+      <div class="episode-controls">
+        <button class="btn btn-gold" data-seq="play" data-rate="0.85">▶ Play</button>
+        <button class="btn btn-ghost" data-seq="play" data-rate="0.65">▶ Slowly</button>
+        <button class="btn btn-ghost" data-seq="stop">Stop</button>
+        <button class="btn btn-ghost" data-seq="english">Hide English</button>
+      </div>
+      <div class="episode-dialogue">
+        ${d.lines.map(l => `
+          <div class="dialogue-line">
+            <div class="dialogue-who">${escapeHtml(l.who)}</div>
+            <div class="dialogue-fr">${escapeHtml(l.fr)}
+              <button class="play-btn" data-text="${escapeAttr(l.say || l.fr)}" data-voice="${voiceOf(l.who)}">▶</button>
+            </div>
+            <div class="dialogue-en">${escapeHtml(l.en)}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+    <p class="video-note">Listen once with the English. Then hide it and listen again — how much can you follow?</p>`;
 
-      checkExercisesComplete(lesson);
-    });
+  const card = content.querySelector('.lesson-dialogue');
+  const lineEls = card.querySelectorAll('.dialogue-line');
+  card.querySelectorAll('[data-seq]').forEach(btn => btn.addEventListener('click', () => {
+    const act = btn.dataset.seq;
+    if (act === 'stop') return stopSpeech();
+    if (act === 'english') {
+      const hidden = card.classList.toggle('hide-en');
+      btn.textContent = hidden ? 'Show English' : 'Hide English';
+      return;
+    }
+    playLines(d.lines.map((l, i) => ({ text: l.say || l.fr, el: lineEls[i], voice: voiceOf(l.who) })), parseFloat(btn.dataset.rate));
+  }));
+}
+
+// ------------------------------------------------------------
+// PRACTICE — exercise engine
+// ------------------------------------------------------------
+//
+// Exercise types (`type` defaults to 'choice'):
+//   choice  { q, options, correct, explanation }
+//   listen  { audio, q, options, correct, explanation } — hear French, then choose
+//   type    { q, answers: [accepted…], explanation }    — write the French
+//   order   { q, words: [in order], answer, explanation } — build the sentence
+// Options are shuffled on screen; `correct` indexes the original list.
+// Explanations for type/order start with the model answer.
+
+const ACCENT_KEYS = ['é', 'è', 'ê', 'à', 'â', 'ç', 'ù', 'û', 'î', 'ï', 'ô', 'ë', 'œ'];
+
+function shuffled(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// Lowercase, unify apostrophes, drop punctuation and hyphens:
+// "Bonjour, madame !" matches "bonjour madame".
+function normAnswer(s) {
+  return s.toLowerCase()
+    .replace(/[’‘`´]/g, "'")
+    .replace(/[.,!?;:«»"()\-–—]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function stripAccents(s) {
+  return s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/œ/g, 'oe');
+}
+
+function renderExercises(lesson, content) {
+  const kinds = { choice: 'Choose', listen: 'Listen', type: 'Write', order: 'Build' };
+  const items = lesson.exercises.map((ex, i) => {
+    const type = ex.type || 'choice';
+    let body = '';
+    if (type === 'choice' || type === 'listen') {
+      body = (type === 'listen' ? `
+        <div class="listen-row">
+          <button class="listen-btn" data-text="${escapeAttr(ex.audio)}">▶ Listen</button>
+          <button class="listen-btn slow" data-text="${escapeAttr(ex.audio)}" data-rate="0.6">Slowly</button>
+        </div>` : '') + `
+        <div class="exercise-options">
+          ${shuffled(ex.options.map((_, oi) => oi)).map(oi =>
+            `<button class="exercise-option" data-opt="${oi}">${escapeHtml(ex.options[oi])}</button>`).join('')}
+        </div>`;
+    } else if (type === 'type') {
+      body = `
+        <div class="type-row">
+          <input class="type-input" type="text" lang="fr" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type in French…">
+          <button class="btn btn-primary type-check">Check</button>
+        </div>
+        <div class="accent-keys">${ACCENT_KEYS.map(k => `<button class="accent-key" tabindex="-1">${k}</button>`).join('')}</div>`;
+    } else if (type === 'order') {
+      const order = shuffled(ex.words.map((_, wi) => wi));
+      if (order.length > 1 && order.every((w, k) => w === k)) order.push(order.shift()); // never start solved
+      body = `
+        <div class="order-answer"></div>
+        <div class="order-pool">${order.map(wi => `<button class="order-word" data-w="${wi}">${escapeHtml(ex.words[wi])}</button>`).join('')}</div>
+        <button class="btn btn-primary order-check" disabled>Check</button>`;
+    }
+    return `
+      <div class="exercise" data-q="${i}" data-type="${type}">
+        <div class="exercise-kind">${kinds[type]}</div>
+        <div class="exercise-q">${i + 1}. ${escapeHtml(ex.q)}</div>
+        ${body}
+        <div class="exercise-explanation" hidden></div>
+      </div>`;
+  }).join('');
+
+  content.innerHTML = `
+    <p>Recognise first, then produce. Every question gives you feedback straight away.</p>
+    <div class="practice">${items}</div>
+    <div id="exerciseSummary"></div>`;
+
+  const practice = content.querySelector('.practice');
+  practice.addEventListener('click', e => onPracticeClick(e, lesson));
+  // Accent keys must not steal focus from the text box.
+  practice.addEventListener('mousedown', e => { if (e.target.closest('.accent-key')) e.preventDefault(); });
+  practice.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && e.target.classList.contains('type-input')) {
+      e.preventDefault();
+      checkTyped(e.target.closest('.exercise'), lesson);
+    }
   });
+}
+
+function onPracticeClick(e, lesson) {
+  const exEl = e.target.closest('.exercise');
+  if (!exEl) return;
+  const i = +exEl.dataset.q;
+  if (exerciseAnswers[i]) return;
+  const ex = lesson.exercises[i];
+
+  const opt = e.target.closest('.exercise-option');
+  if (opt) {
+    const correct = +opt.dataset.opt === ex.correct;
+    exEl.querySelectorAll('.exercise-option').forEach(el => {
+      el.classList.add('disabled');
+      if (+el.dataset.opt === ex.correct) el.classList.add('correct');
+      if (el === opt && !correct) el.classList.add('wrong');
+    });
+    const heard = ex.audio ? `You heard « ${ex.audio} ». ` : '';
+    return answerExercise(exEl, i, correct, heard + ex.explanation, lesson);
+  }
+
+  const key = e.target.closest('.accent-key');
+  if (key) {
+    const input = exEl.querySelector('.type-input');
+    const start = input.selectionStart ?? input.value.length;
+    const end = input.selectionEnd ?? start;
+    input.value = input.value.slice(0, start) + key.textContent + input.value.slice(end);
+    input.setSelectionRange(start + 1, start + 1);
+    input.focus();
+    return;
+  }
+
+  if (e.target.closest('.type-check')) return checkTyped(exEl, lesson);
+
+  const word = e.target.closest('.order-word');
+  if (word) {
+    const pool = exEl.querySelector('.order-pool');
+    const built = exEl.querySelector('.order-answer');
+    (word.parentElement === pool ? built : pool).appendChild(word);
+    exEl.querySelector('.order-check').disabled = pool.children.length > 0;
+    return;
+  }
+
+  if (e.target.closest('.order-check')) {
+    const built = [...exEl.querySelectorAll('.order-answer .order-word')].map(w => ex.words[+w.dataset.w]);
+    const correct = normAnswer(built.join(' ')) === normAnswer(ex.words.join(' '));
+    exEl.querySelectorAll('.order-word, .order-check').forEach(b => { b.disabled = true; });
+    exEl.querySelector('.order-answer').classList.add(correct ? 'correct' : 'wrong');
+    return answerExercise(exEl, i, correct, (correct ? '' : 'The answer: ') + ex.explanation, lesson);
+  }
+}
+
+function checkTyped(exEl, lesson) {
+  const i = +exEl.dataset.q;
+  if (exerciseAnswers[i]) return;
+  const ex = lesson.exercises[i];
+  const input = exEl.querySelector('.type-input');
+  const given = normAnswer(input.value);
+  if (!given) return input.focus();
+
+  const accepted = ex.answers.map(normAnswer);
+  const exact = accepted.includes(given);
+  // Right words, wrong or missing accents: counts, with a nudge.
+  const almost = !exact && accepted.map(stripAccents).includes(stripAccents(given));
+  input.disabled = true;
+  exEl.querySelector('.type-check').disabled = true;
+  input.classList.add(exact ? 'correct' : almost ? 'almost' : 'wrong');
+  const msg = exact ? ex.explanation
+    : almost ? `Almost — check the accents. ${ex.explanation}`
+    : `The answer: ${ex.explanation}`;
+  answerExercise(exEl, i, exact || almost, msg, lesson, almost);
+}
+
+function answerExercise(exEl, i, correct, message, lesson, almost = false) {
+  exerciseAnswers[i] = { correct };
+  exEl.classList.add('answered', correct ? (almost ? 'is-almost' : 'is-correct') : 'is-wrong');
+  const exp = exEl.querySelector('.exercise-explanation');
+  exp.textContent = (correct ? (almost ? '≈ ' : '✓ ') : '✗ ') + message;
+  exp.hidden = false;
+  checkExercisesComplete(lesson);
 }
 
 function checkExercisesComplete(lesson) {
@@ -369,20 +673,37 @@ function checkExercisesComplete(lesson) {
   const total = lesson.exercises.length;
   const summary = document.getElementById('exerciseSummary');
   const alreadyComplete = completedLessons.has(lesson.id);
-  const idx = LESSONS.findIndex(l => l.id === lesson.id);
-  const next = LESSONS[idx + 1];
+  const seq = lessonSequence(lesson.id);
+  const nextId = seq[seq.indexOf(lesson.id) + 1];
+  const ratio = correctCount / total;
+  const verdict = ratio === 1 ? 'A clean run. You earned it.'
+    : ratio >= 0.7 ? 'Good work. Read the explanations for the ones you missed.'
+    : 'Worth another pass: rewatch the video or reread the notes, then try again.';
 
   summary.innerHTML = `
     <div class="exercise-summary">
       <div class="score">${correctCount} / ${total}</div>
-      <div class="sub">${correctCount === total ? 'A clean run. You earned it.' : 'Good. Review the explanations above and try the next lesson.'}</div>
+      <div class="sub">${verdict}</div>
       <div style="display:flex; gap:0.6rem; justify-content:center; flex-wrap:wrap;">
         ${alreadyComplete ? '' : `<button class="btn btn-gold" id="completeBtn">Complete lesson</button>`}
-        ${alreadyComplete && next ? `<button class="btn btn-primary" id="nextLessonBtn">Next lesson →</button>` : ''}
-        ${alreadyComplete && !next ? `<button class="btn btn-ghost" id="backHomeBtn">Back home</button>` : ''}
+        ${alreadyComplete && nextId ? `<button class="btn btn-primary" id="nextLessonBtn">Next lesson →</button>` : ''}
+        ${alreadyComplete && !nextId ? `<button class="btn btn-ghost" id="backHomeBtn">Back home</button>` : ''}
+        <button class="btn btn-ghost" id="retryBtn">Try again</button>
       </div>
     </div>
+    ${lesson.tutor ? `
+      <div class="tutor-box">
+        <div class="tutor-label">With your tutor</div>
+        <p>Take these into your next live session:</p>
+        <ul>${lesson.tutor.map(t => `<li>${escapeHtml(t)}</li>`).join('')}</ul>
+      </div>` : ''}
   `;
+
+  document.getElementById('retryBtn').addEventListener('click', () => {
+    exerciseAnswers = {};
+    renderExercises(lesson, document.getElementById('phaseContent'));
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  });
 
   const completeBtn = document.getElementById('completeBtn');
   if (completeBtn) {
@@ -401,12 +722,7 @@ function checkExercisesComplete(lesson) {
     });
   }
   const nextLessonBtn = document.getElementById('nextLessonBtn');
-  if (nextLessonBtn) {
-    nextLessonBtn.addEventListener('click', () => {
-      showPage('lesson', { lessonId: next.id });
-      location.hash = next.id;
-    });
-  }
+  if (nextLessonBtn) nextLessonBtn.addEventListener('click', () => goToLesson(nextId));
   const backHomeBtn = document.getElementById('backHomeBtn');
   if (backHomeBtn) {
     backHomeBtn.addEventListener('click', () => {
@@ -553,24 +869,29 @@ function renderEpisodes() {
 }
 
 function playEpisode(episode, cardEl, rate) {
-  stopSpeech();
-  episodePlayState = { stopped: false };
   const lineEls = cardEl.querySelectorAll('.dialogue-line');
+  playLines(episode.dialogue.map((l, i) => ({ text: l.fr, el: lineEls[i] })), rate);
+}
 
-  function playLine(i) {
-    if (episodePlayState.stopped) return;
-    if (i >= episode.dialogue.length) {
-      if (activeEpisodeLineEl) activeEpisodeLineEl.classList.remove('active');
+// Speak items one after another, highlighting each one's element.
+// items: [{ text, el, voice }]; gapMs: pause between items.
+function playLines(items, rate = 0.85, gapMs = 250) {
+  stopSpeech();
+  const state = episodePlayState = { stopped: false };
+
+  function step(i) {
+    if (state.stopped) return;
+    if (activeEpisodeLineEl) activeEpisodeLineEl.classList.remove('active');
+    if (i >= items.length) {
       activeEpisodeLineEl = null;
       return;
     }
-    if (activeEpisodeLineEl) activeEpisodeLineEl.classList.remove('active');
-    activeEpisodeLineEl = lineEls[i];
+    activeEpisodeLineEl = items[i].el;
     activeEpisodeLineEl.classList.add('active');
     activeEpisodeLineEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    speak(episode.dialogue[i].fr, rate, () => playLine(i + 1));
+    speak(items[i].text, rate, () => setTimeout(() => step(i + 1), gapMs), items[i].voice || 0);
   }
-  playLine(0);
+  step(0);
 }
 
 // ============================================================

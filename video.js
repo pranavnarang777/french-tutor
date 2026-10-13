@@ -38,16 +38,29 @@ const Voices = {
     return this.list.filter(v => v.lang && v.lang.toLowerCase().replace('_', '-').startsWith(lang));
   },
 
-  pick(lang) {
-    const cands = this.candidates(lang);
-    const pref = this.prefs[lang];
-    if (pref) {
-      const v = cands.find(c => c.name === pref);
-      if (v) return v;
-    }
+  // Best voices first; the voice chosen in settings always leads.
+  ranked(lang) {
     const regional = lang === 'fr' ? 'fr-fr' : null;
-    const rank = v => this.score(v) + (regional && v.lang.toLowerCase().replace('_', '-') === regional ? 1 : 0);
-    return cands.slice().sort((a, b) => rank(b) - rank(a))[0] || null;
+    const pref = this.prefs[lang];
+    const rank = v => (v.name === pref ? 100 : 0) + this.score(v) +
+      (regional && v.lang.toLowerCase().replace('_', '-') === regional ? 1 : 0);
+    return this.candidates(lang).sort((a, b) => rank(b) - rank(a));
+  },
+
+  pick(lang) {
+    return this.ranked(lang)[0] || null;
+  },
+
+  // Dialogue speakers: speaker 0 gets the main French voice, speaker 1
+  // the next one, and so on. With fewer voices than speakers, a voice is
+  // reused at a different pitch so the two people still sound distinct.
+  forSpeaker(i = 0) {
+    const fr = this.ranked('fr');
+    if (!fr.length) return { voice: null, pitch: i ? (i % 2 ? 0.85 : 1.15) : 1 };
+    return {
+      voice: fr[i % fr.length],
+      pitch: i < fr.length ? 1 : (i % 2 ? 0.85 : 1.15)
+    };
   },
 
   setPref(lang, name) {
@@ -66,19 +79,27 @@ if (window.speechSynthesis) {
 // TEXT HELPERS
 // ------------------------------------------------------------
 
-// [[French]] → French styling; {{x}} → gold highlight (endings, key letters).
+// [[French]] → French styling; {{x}} → gold highlight (endings, key
+// letters); ((x)) → silent letters, shown faded.
 function vpRich(s) {
   return escapeHtml(s || '')
-    .replace(/\[\[(.+?)\]\]/g, '<span class="vp-french">$1</span>')
-    .replace(/\{\{(.+?)\}\}/g, '<span class="vp-hl">$1</span>');
+    .replace(/\[\[(?:\d:)?(.+?)\]\]/g, '<span class="vp-french">$1</span>')
+    .replace(/\{\{(.+?)\}\}/g, '<span class="vp-hl">$1</span>')
+    .replace(/\(\((.+?)\)\)/g, '<span class="vp-silent">$1</span>');
 }
 
-// Split narration into voice segments: [{ lang: 'en'|'fr', text }]
+// Split narration into voice segments: [{ lang: 'en'|'fr', voice, text }].
+// [[2:…]] is French spoken by a second voice — the other person in a dialogue.
 function vpSegments(say) {
   const out = [];
   String(say || '').split(/\[\[(.+?)\]\]/).forEach((chunk, i) => {
-    const text = chunk.replace(/\{\{|\}\}/g, '').trim();
-    if (/[\p{L}\p{N}]/u.test(text)) out.push({ lang: i % 2 ? 'fr' : 'en', text });
+    let voice = 0;
+    if (i % 2) {
+      const m = chunk.match(/^(\d):\s*/);
+      if (m) { voice = +m[1] - 1; chunk = chunk.slice(m[0].length); }
+    }
+    const text = chunk.replace(/\{\{|\}\}|\(\(|\)\)/g, '').trim();
+    if (/[\p{L}\p{N}]/u.test(text)) out.push({ lang: i % 2 ? 'fr' : 'en', voice, text });
   });
   return out;
 }
@@ -151,6 +172,18 @@ function vpRenderEl(el) {
       ).join('');
       break;
 
+    // Rows of cells; columns listed in `fr` are styled as French.
+    case 'grid': {
+      const frCols = el.fr || [0];
+      const cols = (el.head || el.rows[0]).length;
+      d.style.setProperty('--grid', el.widths || `repeat(${cols}, minmax(0, 1fr))`);
+      const cell = (c, ci) => `<span class="vp-gc${frCols.includes(ci) ? ' vp-gc-fr' : ''}">${vpRich(c)}</span>`;
+      d.innerHTML =
+        (el.head ? `<div class="vp-grid-head">${el.head.map(h => `<span>${vpRich(h)}</span>`).join('')}</div>` : '') +
+        el.rows.map((r, i) => part(r.map(cell).join(''), i, 'vp-grid-row')).join('');
+      break;
+    }
+
     case 'arrow':
       d.innerHTML =
         (el.label ? `<span class="vp-arrow-label">${vpRich(el.label)}</span>` : '') +
@@ -159,7 +192,7 @@ function vpRenderEl(el) {
       break;
 
     case 'group':
-      d.innerHTML = `<div class="vp-group-label">${vpRich(el.label)}</div>` +
+      d.innerHTML = (el.label ? `<div class="vp-group-label">${vpRich(el.label)}</div>` : '') +
         `<div class="vp-group-items">${el.items.map((it, i) => part(vpRich(it), i, 'vp-chip')).join('')}</div>`;
       break;
 
@@ -285,7 +318,7 @@ class LessonVideo {
           <div class="vp-overlay-title">Fin de la vidéo</div>
           <div class="vp-end-actions">
             <button class="vp-pill" data-act="restart">${VP_ICONS.replay} Watch again</button>
-            ${this.opts.onComplete ? `<button class="vp-pill vp-pill-gold" data-act="done">Continue to theory →</button>` : ''}
+            ${this.opts.onComplete ? `<button class="vp-pill vp-pill-gold" data-act="done">${escapeHtml(this.opts.nextLabel || 'Continue')} →</button>` : ''}
           </div>
         </div>
       </div>
@@ -515,9 +548,10 @@ class LessonVideo {
       }
       const seg = segs[k++];
       const u = new SpeechSynthesisUtterance(seg.text);
-      const v = Voices.pick(seg.lang);
+      const { voice: v, pitch } = seg.lang === 'fr' ? Voices.forSpeaker(seg.voice) : { voice: Voices.pick('en'), pitch: 1 };
       u.lang = v ? v.lang : (seg.lang === 'fr' ? 'fr-FR' : 'en-US');
       if (v) u.voice = v;
+      u.pitch = pitch;
       u.rate = VP_RATE[seg.lang] * this.rate;
       let finished = false;
       const finish = () => {
